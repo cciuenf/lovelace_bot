@@ -1,4 +1,8 @@
 defmodule Lovelace.Helpers do
+  @moduledoc """
+  Provide wrappers and helpers functions
+  """
+
   use Tesla
   require Logger
 
@@ -23,9 +27,9 @@ defmodule Lovelace.Helpers do
   /kick @User_1 @User_2 -> 184564595 284564595
   """
   def get_mentioned_users(entities) do
-    entites
+    entities
     |> Enum.filter(&(&1.type == "text_mention"))
-    |> Enum.mao(& &1.user.id)
+    |> Enum.map(& &1.user.id)
   end
 
   # wrapper for string to int
@@ -41,8 +45,8 @@ defmodule Lovelace.Helpers do
   # wrapper to parse Tesla responses
 
   def handle_response({:ok, %{status: 200, body: body}}), do: {:ok, body}
-  def handle_response({:ok, %{status: _, body: _} = resp}), do: {:error, resp}
-  def handle_response({:error, _error} = resp), do: resp
+  def handle_response({:ok, resp = %{status: _, body: _}}), do: {:error, resp}
+  def handle_response(resp = {:error, _error}), do: resp
 
   # Challenges extraction
 

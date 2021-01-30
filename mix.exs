@@ -25,7 +25,9 @@ defmodule Lovelace.MixProject do
       {:nadia, "~> 0.7.0"},
       {:poison, "~> 3.1"},
       {:tesla, "~> 1.4.0"},
-      {:hackney, "~> 1.16.0"}
+      {:hackney, "~> 1.16.0"},
+      {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
+      {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]
   end
 end
