@@ -3,7 +3,7 @@ defmodule Lovelace.Router do
   Handles all external bot's interactions
   """
 
-  @bot_name Application.compile_env(:app, :bot_name)
+  @bot_name Application.compile_env(:lovelace, :bot_name)
 
   # Code injectors
 

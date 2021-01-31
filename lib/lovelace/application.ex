@@ -5,11 +5,11 @@ defmodule Lovelace.Application do
 
   @impl true
   def start(_type, _args) do
-    bot_name = Application.get_env(:app, :bot_name)
+    bot_name = Application.get_env(:lovelace, :bot_name)
 
     unless String.valid?(bot_name) do
       IO.warn("""
-      Env not found Application.get_env(:app, :bot_name)
+      Env not found Application.get_env(:lovelace, :bot_name)
       This will give issues when generating commands
       """)
     end
