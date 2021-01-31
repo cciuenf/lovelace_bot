@@ -7,9 +7,9 @@ O bot do Telegram do grupo de CC.
 ## Comandos:
 - `/ajuda`: Cita os comandos do bot
 - `/bemvindo`: Manda uma mensagem de boas vindas
-- `/ranking`: Mostra o ranking dos desafios do Lambda 
-- `/desafios`: Mostra a lista de desafios do Lambda
-- `/piada`: Conta uma piada sobre programação funcional
+- `/ranking`: Mostra o ranking dos desafios
+- `/desafios`: Mostra a lista de desafios
+- `/piada`: Conta uma piada sobre programação
 - `/xkcd`: Envia uma tirinha do xkcd 
 - `/monads`: Define monads de maneira intuitiva
 
