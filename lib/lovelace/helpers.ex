@@ -102,19 +102,19 @@ defmodule Lovelace.Helpers do
   end
 
   def get_ranking(top \\ "") do
-    get("https://raw.githubusercontent.com/cciuenf/desafios/master/ranking.json")
+    get("https://raw.githubusercontent.com/cciuenf/desafios/main/ranking.json")
     |> handle_response()
     |> extract_ranking(top)
   end
 
   def get_challenges(number \\ "") do
-    get("https://raw.githubusercontent.com/cciuenf/desafios/master/challenges.json")
+    get("https://raw.githubusercontent.com/cciuenf/desafios/main/challenges.json")
     |> handle_response()
     |> extract_challenges(number)
   end
 
   def get_joke(number \\ "") do
-    get("https://raw.githubusercontent.com/cciuenf/lovelace_bot/master/jokes.json")
+    get("https://raw.githubusercontent.com/cciuenf/lovelace_bot/main/jokes.json")
     |> handle_response()
     |> extract_joke(number)
   end
