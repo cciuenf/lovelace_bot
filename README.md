@@ -1,21 +1,27 @@
-# Lovelace
+# Lovelace-bot
 
-**TODO: Add description**
+![build](https://github.com/cciuenf/lovelace_bot/workflows/build/badge.svg?branch=main)
 
-## Installation
+O bot do Telegram do grupo de CC. 
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `lovelace` to your list of dependencies in `mix.exs`:
+## Comandos:
+- `/ajuda`: Cita os comandos do bot
+- `/bemvindo`: Manda uma mensagem de boas vindas
+- `/ranking`: Mostra o ranking dos desafios do Lambda 
+- `/desafios`: Mostra a lista de desafios do Lambda
+- `/piada`: Conta uma piada sobre programação funcional
+- `/xkcd`: Envia uma tirinha do xkcd 
+- `/monads`: Define monads de maneira intuitiva
 
-```elixir
-def deps do
-  [
-    {:lovelace, "~> 0.1.0"}
-  ]
-end
-```
+Para as funções `/piada`, `/desafios` e `/xkcd`, você pode usar um argumento para definir uma saída não aleatória. Por exemplo, para enviar a xkcd número 200:
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/lovelace](https://hexdocs.pm/lovelace).
+`/xkcd 200` 
 
+Além disso, o comando `/ranking` suporta um argumento que diz quantos usuários deve mostrar. 
+
+## Contribuindo: 
+Sinta-se livre para mandar um pull request! :)
+Sugestões de comandos para implementação nos issues. 
+
+## Licença:
+MIT.

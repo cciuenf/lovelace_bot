@@ -1,8 +1,7 @@
 defmodule LovelaceTest do
   use ExUnit.Case
-  doctest Lovelace
 
-  test "greets the world" do
-    assert Lovelace.hello() == :world
+  test "math" do
+    assert 1 == 1
   end
 end
