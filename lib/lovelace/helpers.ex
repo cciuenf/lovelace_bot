@@ -45,7 +45,7 @@ defmodule Lovelace.Helpers do
 
   # wrapper to parse Tesla responses
 
-  def handle_response({:ok, %{status: 200, body: body}}), do: {:ok, body}
+  def handle_response({:ok, %{status: 200, body: body}}), do: {:ok, Poison.decode!(body)}
   def handle_response({:ok, resp = %{status: _, body: _}}), do: {:error, resp}
   def handle_response(resp = {:error, _error}), do: resp
 
