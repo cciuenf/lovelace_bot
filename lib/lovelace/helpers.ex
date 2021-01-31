@@ -18,6 +18,7 @@ defmodule Lovelace.Helpers do
       |> String.split(" ")
 
     args
+    |> Enum.join(" ")
   end
 
   @doc """
@@ -51,7 +52,7 @@ defmodule Lovelace.Helpers do
   # Challenges extraction
 
   def extract_challenges({:ok, body}, _number = "") do
-    for item <- body, into: [] do
+    for item <- body, into: "" do
       ~s(#{item["name"]} - soluções: #{item["solutions"]} - #{item["link"]}\n)
     end
   end
@@ -67,7 +68,7 @@ defmodule Lovelace.Helpers do
   # Ranking extactions
 
   def extract_ranking({:ok, body}, _top = "") do
-    for item <- body, into: [] do
+    for item <- body, into: "" do
       ~s(#{item["ranking"]} - soluções: #{item["user"]} - #{item["pontuation"]}\n)
     end
   end
@@ -77,7 +78,7 @@ defmodule Lovelace.Helpers do
       body
       |> Enum.slice(0, digit_to_int(top))
 
-    for item <- slice, into: [] do
+    for item <- slice, into: "" do
       ~s(#{item["ranking"]} - soluções: #{item["user"]} - #{item["pontuation"]}\n)
     end
   end
