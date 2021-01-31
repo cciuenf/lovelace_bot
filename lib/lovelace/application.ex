@@ -6,6 +6,7 @@ defmodule Lovelace.Application do
   @impl true
   def start(_type, _args) do
     bot_name = Application.get_env(:lovelace, :bot_name)
+    port = Application.get_env(:lovelace, :port)
 
     unless String.valid?(bot_name) do
       IO.warn("""
@@ -20,7 +21,8 @@ defmodule Lovelace.Application do
 
     children = [
       {Lovelace.Poller, []},
-      {Lovelace.Matcher, []}
+      {Lovelace.Matcher, []},
+      {Plug.Cowboy, scheme: :http, plug: Lovelace.Server, options: [port: port]}
     ]
 
     opts = [strategy: :one_for_one, name: Lovelace.Supervisor]
