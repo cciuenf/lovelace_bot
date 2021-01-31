@@ -65,6 +65,6 @@ defmodule Lovelace.Poller do
     Matcher.match(message)
   rescue
     err in MatchError ->
-      Logger.log(:warn, "Errored with #{err} at #{Poison.encode!(message)}")
+      Logger.log(:warn, "Errored with #{err} at #{Jason.encode!(message)}")
   end
 end

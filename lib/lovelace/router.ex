@@ -18,7 +18,7 @@ defmodule Lovelace.Router do
         err in FunctionClauseError ->
           Logger.log(:warn, """
           Errored when matching command. #{err}
-          Message was: #{Poison.encode!(message)}
+          Message was: #{Jason.encode!(message)}
           """)
       end
     end
