@@ -11,22 +11,10 @@ defmodule LovelaceWeb.FallbackController do
   @accepts :any
   def call(conn, {:ok, message}) when is_atom(message), do: call(conn, {:ok, %{message: message}})
 
-  def call(conn, {:ok, %{message: _}, _} = tuple) do
-    {:ok, _, exp: exp} = tuple
-
-    res =
-      tuple
-      |> Tuple.delete_at(2)
-
-    conn
-    |> put_resp_header("x-expires", "#{exp}")
-    |> call(res)
-  end
-
   def call(conn, {:ok, %{message: message} = body}) do
     conn
     |> StatusCode.put_status(message, :ok)
-    |> put_view(LovelaceWeb.SuccessView)
+    |> put_view(LovelaceWeb.APISuccessView)
     |> assign(:body, body)
     |> render("success.json")
   end
@@ -45,7 +33,7 @@ defmodule LovelaceWeb.FallbackController do
     conn
     |> StatusCode.put_status(message, :error)
     |> assign(:body, body)
-    |> put_view(LovelaceWeb.ErrorView)
+    |> put_view(LovelaceWeb.APIErrorView)
     |> render("generic_error.json")
   end
 end
