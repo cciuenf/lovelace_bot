@@ -7,6 +7,7 @@ defmodule LovelaceIntegration.Telegram.ClientInputs do
   """
 
   alias Lovelace.Changeset
+  alias LovelaceIntegration.Telegram.ClientInputs
 
   defmacro __using__(_opts) do
     quote location: :keep do
@@ -22,7 +23,7 @@ defmodule LovelaceIntegration.Telegram.ClientInputs do
               changeset
               |> Changeset.apply_changes()
               |> Map.from_struct()
-              |> LovelaceIntegration.Telegram.ClientInputs.drop_nil()
+              |> ClientInputs.drop_nil()
 
             {:ok, input_map}
 
