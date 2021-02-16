@@ -1,4 +1,4 @@
-POR FAVOR, LEIAM o [./CHANGELOG.org](CHANGELOG)
+POR FAVOR, LEIAM o [CHANGELOG](./CHANGELOG.org)
 
 # Lovelace-bot
 
