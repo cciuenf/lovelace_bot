@@ -1,29 +1,20 @@
-POR FAVOR, LEIAM o [CHANGELOG](./CHANGELOG.org)
+# Lovelace
 
-# Lovelace-bot
+To start your Phoenix server:
 
-![build](https://github.com/cciuenf/lovelace_bot/workflows/build/badge.svg?branch=main)
+  * Install dependencies with `mix deps.get`
+  * Create and migrate your database with `mix ecto.setup`
+  * Install Node.js dependencies with `npm install` inside the `assets` directory
+  * Start Phoenix endpoint with `mix phx.server`
 
-O bot do Telegram do grupo de CC. 
+Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
-## Comandos:
-- `/ajuda`: Cita os comandos do bot
-- `/bemvindo`: Manda uma mensagem de boas vindas
-- `/ranking`: Mostra o ranking dos desafios
-- `/desafios`: Mostra a lista de desafios
-- `/piada`: Conta uma piada sobre programação
-- `/xkcd`: Envia uma tirinha do xkcd 
-- `/monads`: Define monads de maneira intuitiva
+Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
-Para as funções `/piada`, `/desafios` e `/xkcd`, você pode usar um argumento para definir uma saída não aleatória. Por exemplo, para enviar a xkcd número 200:
+## Learn more
 
-`/xkcd 200` 
-
-Além disso, o comando `/ranking` suporta um argumento que diz quantos usuários deve mostrar. 
-
-## Contribuindo: 
-Sinta-se livre para mandar um pull request! :)
-Sugestões de comandos para implementação nos issues. 
-
-## Licença:
-MIT.
+  * Official website: https://www.phoenixframework.org/
+  * Guides: https://hexdocs.pm/phoenix/overview.html
+  * Docs: https://hexdocs.pm/phoenix
+  * Forum: https://elixirforum.com/c/phoenix-forum
+  * Source: https://github.com/phoenixframework/phoenix
