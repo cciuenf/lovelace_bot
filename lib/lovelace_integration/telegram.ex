@@ -1,0 +1,38 @@
+defmodule LovelaceIntegration.Telegram do
+  @moduledoc """
+  Telegram message helpers
+  """
+
+  require Logger
+
+  alias Lovelace.Events
+  alias LovelaceIntegration.Telegram.Handlers
+  alias LovelaceIntegration.Telegram.Message
+
+  @doc """
+  Builds a message from a telegram message representation
+  """
+  def build_message(params) do
+    params
+    |> Message.cast()
+    |> case do
+      %Ecto.Changeset{valid?: true} = changeset ->
+        {:ok, Ecto.Changeset.apply_changes(changeset)}
+
+      changeset ->
+        {:error, changeset}
+    end
+  end
+
+  @doc """
+  Processes a message with its handler
+  """
+  def process_message(%Message{} = msg) do
+    {:ok, handler} = msg |> Handlers.get_handler()
+
+    Logger.info("Processing message #{inspect(msg.message_id)} with handler #{inspect(handler)}")
+
+    msg
+    |> handler.handler()
+  end
+end
