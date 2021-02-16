@@ -20,7 +20,6 @@ defmodule LovelaceWeb do
   def controller do
     quote do
       use Phoenix.Controller, namespace: LovelaceWeb
-      use LovelaceWeb.RequestParams
 
       import Plug.Conn
       import LovelaceWeb.Gettext
