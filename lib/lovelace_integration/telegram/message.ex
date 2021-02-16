@@ -4,7 +4,7 @@ defmodule LovelaceIntegration.Telegram.Message do
   """
   use Ecto.Schema
 
-  alias Lovelace.Changeset
+  alias Ecto.Changeset
 
   embedded_schema do
     field :message_id, :integer

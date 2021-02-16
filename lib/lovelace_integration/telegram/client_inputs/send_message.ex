@@ -5,7 +5,7 @@ defmodule LovelaceIntegration.Telegram.ClientInputs.SendMessage do
 
   use LovelaceIntegration.Telegram.ClientInputs
 
-  alias Lovelace.Changeset
+  alias Ecto.Changeset
 
   embedded_schema do
     field :chat_id, :integer

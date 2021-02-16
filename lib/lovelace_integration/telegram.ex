@@ -35,4 +35,12 @@ defmodule LovelaceIntegration.Telegram do
     msg
     |> handler.handler()
   end
+
+  @doc """
+  Enqueues processing for a message
+  Publishes it as an event in the pubsub
+  """
+  def enqueue_processing!(%Message{} = m) do
+    Events.publish!(Events.TelegramMessage, m)
+  end
 end
