@@ -1,7 +1,7 @@
 #+title: Lovelace-Bot
 
 #+caption: build
-[[https://github.com/cciuenf/lovelace_bot/workflows/build/badge.svg?branch=main]]
+[[https://github.com/cciuenf/lovelace_bot/workflows/build/badge.svg?branch=v2.0.0]]
 
 O bot do Telegram do grupo de CC.
 
