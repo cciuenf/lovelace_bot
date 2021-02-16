@@ -2,7 +2,7 @@ version: "3"
 
 services:
   postgres:
-    container_name: bank-db
+    container_name: lovelace-db
     image: postgres:12
     ports:
       - 127.0.0.1:5432:5432
