@@ -1,4 +1,8 @@
 defmodule LovelaceWeb.PageLive do
+  @moduledoc """
+  Page Live
+  """
+
   use LovelaceWeb, :live_view
 
   @impl true
