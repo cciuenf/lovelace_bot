@@ -47,6 +47,8 @@ defmodule Lovelace.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
+      {:tesla, "~> 1.4.0"},
+      {:hackney, "~> 1.16.0"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]
