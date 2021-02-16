@@ -6,18 +6,18 @@ defmodule LovelaceIntegration.Telegram.ClientInputs do
   removing nil fields
   """
 
-  alias Lovelace.Changeset
+  alias Ecto.Changeset
   alias LovelaceIntegration.Telegram.ClientInputs
 
   defmacro __using__(_opts) do
     quote location: :keep do
       @behaviour LovelaceIntegration.Telegram.ClientInputs
 
-      use Lovelace.Changeset
+      use Ecto.Schema
 
       @impl true
       def build(attrs) do
-        case __MODULE__.cast(atts) do
+        case __MODULE__.cast(attrs) do
           %Changeset{valid?: true} = changeset ->
             input_map =
               changeset

@@ -20,6 +20,12 @@ defmodule LovelaceWeb.Router do
     live "/", PageLive, :index
   end
 
+  scope "/integrations", LovelaceWeb do
+    pipe_through :api
+
+    post "/telegram", TelegramIntegrationController, :webhook
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", LovelaceWeb do
   #   pipe_through :api
