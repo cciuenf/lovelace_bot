@@ -5,6 +5,8 @@ defmodule Lovelace.Application do
 
   use Application
 
+  alias LovelaceIntegration.Telegram.Consumers
+
   def start(_type, _args) do
     children = [
       # Start the Ecto repository
@@ -13,6 +15,8 @@ defmodule Lovelace.Application do
       LovelaceWeb.Telemetry,
       # Start the PubSub system
       {Phoenix.PubSub, name: Lovelace.PubSub},
+      # Start the consumer for telegram messages
+      Consumers.MessageHandler,
       # Start the Endpoint (http/https)
       LovelaceWeb.Endpoint
       # Start a worker by calling: Lovelace.Worker.start_link(arg)
