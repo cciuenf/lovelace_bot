@@ -1,0 +1,17 @@
+#+title: Changelog for v2.0
+#+author: Matheus de Souza Pessanha
+
+Pretendo reestruturar e remodelar o bot Lovelace!
+
+* Melhorias
+- Implementar a versão com Webhooks, ao invés da versão com Polling
+- Criar um "cadastro" para professores e estudantes se identificarem
+- Armazenar os desafios, ranking, professores e alunos nu banco de dados
+- Remover alguns comandos "fúteis", ou pelo menos, desligá-los por enquanto
+- Tornar o bot acessível para todos, tanto na usabilidade, tanto no desenvolvimento
+
+  Com o avanço na implementação, irei atualizando este arquivo, ou criarei outro,
+  documentando toda a tragetória.
+
+  Todo e qualquer feedback é bem-vindo, assim como novas sugestões de funcionalidades,
+  comandos ou possíveis pull requests!

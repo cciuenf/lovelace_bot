@@ -1,3 +1,5 @@
+POR FAVOR, LEIAM o [./CHANGELOG.org](CHANGELOG)
+
 # Lovelace-bot
 
 ![build](https://github.com/cciuenf/lovelace_bot/workflows/build/badge.svg?branch=main)
