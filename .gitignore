@@ -22,6 +22,7 @@ erl_crash.dump
 # Ignore package tarball (built via "mix hex.build").
 lovelace-*.tar
 
+/assets/
 
 # Temporary files for e.g. tests
 /tmp
