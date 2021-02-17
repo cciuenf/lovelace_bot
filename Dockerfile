@@ -31,16 +31,12 @@ RUN mix release
 # ---- Application Stage ----
 FROM alpine AS app
 
-ARG HOST
-ARG PORT
 ARG DB_URL
 ARG BOT_TOKEN
 ARG SECRET_KEY_BASE
 
 ENV MIX_ENV=prod \
     DB_URL=$DB_URL \
-    HOST=$HOST \
-    PORT=$PORT \
     BOT_TOKEN=$BOT_TOKEN \
     SECRET_KEY_BASE=$SECRET_KEY_BASE
 

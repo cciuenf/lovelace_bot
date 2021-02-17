@@ -44,6 +44,11 @@ if config_env() == :prod do
   config :lovelace, LovelaceWeb.Endpoint,
     server: true,
     url: [host: app_host, port: app_port, scheme: "https"],
+    check_origin: [
+      "149.154.160.0/20",
+      "91.108.4.0/22",
+      "https://lovelace-szh7fuhjxa-ue.a.run.app/*",
+    ],
     http: [
       port: app_port,
       transport_options: [socket_opts: [:inet6]]
