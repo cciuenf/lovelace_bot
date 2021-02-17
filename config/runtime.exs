@@ -1,7 +1,5 @@
 import Config
 
-app_name = :lovelace
-
 get_env_var = fn var_name, default ->
   value = System.get_env(var_name)
 
@@ -44,8 +42,8 @@ if config_env() == :prod do
     pool_size: pool_size
 
   config :lovelace, Lovelace.Endpoint,
-    url: [host: app_host, port: app_port],
     server: true,
+    url: [host: app_host, port: app_port],
     http: [
       port: app_port,
       transport_options: [socket_opts: [:inet6]]
