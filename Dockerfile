@@ -46,7 +46,7 @@ ENV MIX_ENV=prod \
 
 # Intall needed packages
 RUN apk add --no-cache openssl \
-      ncurses-libs postgresql-client
+      ncurses-libs postgresql-client curl
 
 # Copy over the build artifact from the previous step and create a non root user
 RUN adduser -D -h /home/lovelace lovelace
