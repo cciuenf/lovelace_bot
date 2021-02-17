@@ -47,7 +47,7 @@ if config_env() == :prod do
     check_origin: [
       "149.154.160.0/20",
       "91.108.4.0/22",
-      "https://lovelace-szh7fuhjxa-ue.a.run.app/*",
+      "https://lovelace-szh7fuhjxa-ue.a.run.app/*"
     ],
     http: [
       port: app_port,
