@@ -10,11 +10,20 @@ done
 
 echo "Connected to the database"
 
+echo "Set Telegram WebHook"
+URL=https://lovelaceccuenf-bot.herokuapp.com/integrations/telegram
+
+curl https://api.telegram.org/bot$BOT_TOKEN/setWebhook?url=$URL
+
+echo "Executing Migrations"
+
 DB_URL=$DB_URL BOT_TOKEN=$BOT_TOKEN \ 
   HOST=$HOST PORT=$PORT \
   SECRET_KEY_BASE=$SECRET_KEY_BASE \
   ./prod/rel/lovelace/bin/conts eval Lovelace.Release.migrate
 
+echo "Starting Lovelace app!"
+  
 DB_URL=$DB_URL BOT_TOKEN=$BOT_TOKEN \ 
   HOST=$HOST PORT=$PORT \
   SECRET_KEY_BASE=$SECRET_KEY_BASE \
