@@ -1,0 +1,19 @@
+#+title: Lovelace-Bot
+
+#+caption: build
+[[https://github.com/cciuenf/lovelace_bot/workflows/build/badge.svg?branch=v2.0.0]]
+
+O bot do Telegram do grupo de CC.
+
+* Comandos:
+
+Em Contrução...
+
+* Contribuindo:
+Sinta-se livre para mandar um pull request! :) Sugestões de comandos
+para implementação nos issues.
+
+* Licença:
+Copyright (c) 2021, Matheus de Souza Pessanha.
+
+O código fonte deste projeto está licensiado perante a [[./LICENSE][MIT License]].
