@@ -11,7 +11,7 @@ done
 echo "Connected to the database"
 
 echo "Set Telegram WebHook"
-URL=https://lovelaceccuenf-bot.herokuapp.com/integrations/telegram
+URL=https://lovelace-szh7fuhjxa-ue.a.run.app/integrations/telegram
 
 curl "https://api.telegram.org/bot$BOT_TOKEN/setWebhook?url=$URL"
 

@@ -43,7 +43,7 @@ if config_env() == :prod do
 
   config :lovelace, LovelaceWeb.Endpoint,
     server: true,
-    url: [host: app_host, port: app_port],
+    url: [host: app_host, port: app_port, scheme: "https"],
     http: [
       port: app_port,
       transport_options: [socket_opts: [:inet6]]
