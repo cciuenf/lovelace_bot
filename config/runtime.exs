@@ -41,7 +41,7 @@ if config_env() == :prod do
     url: db_url,
     pool_size: pool_size
 
-  config :lovelace, Lovelace.Endpoint,
+  config :lovelace, LovelaceWeb.Endpoint,
     server: true,
     url: [host: app_host, port: app_port],
     http: [

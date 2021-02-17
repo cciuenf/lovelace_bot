@@ -20,5 +20,5 @@ defmodule LovelaceWeb.TelegramIntegrationController do
     end
   end
 
-  def webhook(conn, params), do: send_resp(conn, 204, "")
+  def webhook(conn, _params), do: send_resp(conn, 204, "")
 end
