@@ -8,8 +8,6 @@ defmodule LovelaceWeb.TelegramIntegrationController do
   # we only match messages that start with a /, so we don't waste computer
   # power for messages that don't matter
   def webhook(conn, %{"message" => %{"text" => "/" <> _} = params}) do
-    IO.inspect(params)
-
     with {:ok, message} <- Telegram.build_message(params),
          :ok <- Telegram.enqueue_processing!(message) do
       Logger.info("Message enqueued for later processing")
@@ -22,10 +20,5 @@ defmodule LovelaceWeb.TelegramIntegrationController do
     end
   end
 
-  def webhook(conn, params),
-    do:
-      (
-        IO.inspect(params)
-        send_resp(conn, 204, "")
-      )
+  def webhook(conn, params), do: send_resp(conn, 204, "")
 end

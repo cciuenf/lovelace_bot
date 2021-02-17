@@ -1,4 +1,8 @@
 defmodule Lovelace.Release do
+  @moduledoc """
+  Helper module to run migration on release
+  """
+
   @app :lovelace
 
   def migrate do

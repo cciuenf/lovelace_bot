@@ -17,14 +17,14 @@ get_env_var = fn var_name, default ->
   end
 end
 
-# server config
-app_host = get_env_var.("HOST", "localhost")
-app_port = get_env_var.("PORT", "4000") |> String.to_integer()
-
 # general config
 config :lovelace, bot_name: "lovelace"
 
 if config_env() == :prod do
+  # server config
+  app_host = get_env_var.("HOST", "0.0.0.0")
+  app_port = get_env_var.("PORT", "8443") |> String.to_integer()
+
   # bot config
   bot_token = get_env_var.("BOT_TOKEN", :none)
 
