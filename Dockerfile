@@ -42,18 +42,16 @@ ENV MIX_ENV=prod \
     HOST=$HOST \
     PORT=$PORT \
     BOT_TOKEN=$BOT_TOKEN \
-    SHELL=/bin/fish \
     SECRET_KEY_BASE=$SECRET_KEY_BASE
 
 # Intall needed packages
-RUN apk --no-cache upgrade && \
-    apk add --no-cache openssl \
-      ncurses-libs postgresql-client fish
+RUN apk add --no-cache openssl \
+      ncurses-libs postgresql-client
 
 # Copy over the build artifact from the previous step and create a non root user
 RUN adduser -D -h /home/lovelace lovelace
 WORKDIR /home/lovelace
-COPY --from=builder /lovelace/_build .
+COPY --from=builder /app/_build .
 RUN chown -R lovelace: ./prod
 USER lovelace
 
