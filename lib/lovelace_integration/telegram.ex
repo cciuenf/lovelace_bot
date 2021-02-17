@@ -33,7 +33,7 @@ defmodule LovelaceIntegration.Telegram do
     Logger.info("Processing message #{inspect(msg.message_id)} with handler #{inspect(handler)}")
 
     msg
-    |> handler.handler()
+    |> handler.handle()
   end
 
   @doc """
