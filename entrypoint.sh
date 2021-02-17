@@ -8,21 +8,21 @@ do
   sleep 2
 done
 
-echo "\nConnected to the database"
+echo "Connected to the database"
 
-echo "\nSet Telegram WebHook"
+echo "Set Telegram WebHook"
 URL=https://lovelaceccuenf-bot.herokuapp.com/integrations/telegram
 
-curl https://api.telegram.org/bot$BOT_TOKEN/setWebhook?url=$URL
+curl "https://api.telegram.org/bot$BOT_TOKEN/setWebhook?url=$URL"
 
-echo "\nExecuting Migrations"
+echo "Executing Migrations"
 
 DB_URL=$DB_URL BOT_TOKEN=$BOT_TOKEN \ 
   HOST=$HOST PORT=$PORT \
   SECRET_KEY_BASE=$SECRET_KEY_BASE \
   ./prod/rel/lovelace/bin/lovelace eval Lovelace.Release.migrate
 
-echo "\nStarting Lovelace app!"
+echo "Starting Lovelace app!"
   
 DB_URL=$DB_URL BOT_TOKEN=$BOT_TOKEN \ 
   HOST=$HOST PORT=$PORT \
