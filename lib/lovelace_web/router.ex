@@ -17,7 +17,7 @@ defmodule LovelaceWeb.Router do
   scope "/", LovelaceWeb do
     pipe_through :browser
 
-    live "/", PageLive, :index
+    live "/", PageLive
   end
 
   scope "/integrations", LovelaceWeb do
