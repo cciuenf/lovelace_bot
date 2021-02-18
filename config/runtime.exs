@@ -21,8 +21,6 @@ end
 config :lovelace, bot_name: "lovelace"
 
 if config_env() == :prod do
-  # server config
-  app_host = get_env_var.("HOST", "0.0.0.0")
   app_port = get_env_var.("PORT", "8443") |> String.to_integer()
 
   # bot config
@@ -42,9 +40,6 @@ if config_env() == :prod do
     pool_size: pool_size
 
   config :lovelace, LovelaceWeb.Endpoint,
-    server: true,
-    url: [host: app_host, port: app_port, scheme: "https"],
-    check_origin: false,
     http: [
       port: app_port,
       transport_options: [socket_opts: [:inet6]]
