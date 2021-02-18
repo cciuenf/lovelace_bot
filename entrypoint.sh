@@ -21,6 +21,6 @@ DB_URL=$DB_URL BOT_TOKEN=$BOT_TOKEN SECRET_KEY_BASE=$SECRET_KEY_BASE \
   ./prod/rel/lovelace/bin/lovelace eval Lovelace.Release.migrate
 
 echo "Starting Lovelace app!"
-  
+
 DB_URL=$DB_URL BOT_TOKEN=$BOT_TOKEN SECRET_KEY_BASE=$SECRET_KEY_BASE \
   ./prod/rel/lovelace/bin/lovelace start

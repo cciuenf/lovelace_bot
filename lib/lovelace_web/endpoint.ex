@@ -7,7 +7,7 @@ defmodule LovelaceWeb.Endpoint do
   @session_options [
     store: :cookie,
     key: "_lovelace_key",
-    signing_salt: "fjC4L2LO"
+    signing_salt: "qp85oXBz"
   ]
 
   socket "/socket", LovelaceWeb.UserSocket,
