@@ -35,7 +35,7 @@ if config_env() == :prod do
   # server config
   secret_key_base = get_env_var.("SECRET_KEY_BASE", :none)
 
-  config :lovelace, bot_token: bot_token
+  config :lovelace, LovelaceIntegration.Telegram.Client, bot_token: bot_token
 
   config :lovelace, Lovelace.Repo,
     url: db_url,
