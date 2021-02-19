@@ -28,8 +28,18 @@ defmodule LovelaceIntegration.Telegram.Client do
     build_and_send(&post/2, "/restrictChatMember", ClientInputs.RestrictUser, params)
   end
 
+  @doc """
+  Calls the getChatMember method in the telegram api
+  """
   def get_chat_member(params) do
     build_and_send(&post/2, "/getChatMember", ClientInputs.GetChatMember, params)
+  end
+
+  @doc """
+  Calls the kickChatMember method in the telegram api
+  """
+  def ban_user(params) do
+    build_and_send(&post/2, "/kickChatMember", ClientInputs.KickChatMember, params)
   end
 
   defp build_and_send(fun, route, module, params) do

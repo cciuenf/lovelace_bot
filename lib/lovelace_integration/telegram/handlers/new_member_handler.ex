@@ -1,4 +1,4 @@
-defmodule LovelaceIntegration.Telegram.Handlers.NewUserHandler do
+defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
   @moduledoc """
   Restrict a new user to send messages and challenges it with a captcha
   """
@@ -123,13 +123,21 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewUserHandler do
 
   defp start_countdown({:error, _} = err), do: err
 
-  defp start_countdown({:ok, %Message{} = msg}) do
-    :timer.apply_after(@captcha_countdown, Client, :ban_user, [msg])
+  defp start_countdown({:ok, %Message{chat_id: c_id, user_id: u_id}}) do
+    params = %{
+      chat_id: c_id,
+      user_id: u_id,
+      until_date: add_one_year()
+    }
+
+    :timer.apply_after(@captcha_countdown, Client, :ban_user, [params])
   end
 
-  defp captcha_solved(timer_ref), do: {:ok, :cancel} = :timer.cancel(timer_ref)
-
-  defp add_one_year, do: DateTime.utc_now() |> DateTime.add(@seconds_in_year, :second)
+  defp add_one_year do
+    DateTime.utc_now()
+    |> DateTime.add(@seconds_in_year, :second)
+    |> DateTime.to_unix()
+  end
 
   defp welcome_text, do: config_file_path() |> Toml.decode_file!() |> Map.get("welcome_message")
 

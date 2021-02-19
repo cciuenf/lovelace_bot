@@ -19,6 +19,7 @@ defmodule LovelaceIntegration.Telegram.Callback do
     field :data, :string
 
     embeds_one :from, From do
+      field :first_name, :string
       field :username, :string
     end
   end
@@ -32,7 +33,8 @@ defmodule LovelaceIntegration.Telegram.Callback do
     |> Changeset.cast_embed(:from, with: &from_changeset/2)
   end
 
-  defp from_changeset(schema, params), do: Changeset.cast(schema, params, [:username])
+  defp from_changeset(schema, params),
+    do: Changeset.cast(schema, params, [:username, :first_name])
 
   defp put_user_id(%Ecto.Changeset{params: params} = changeset) do
     Ecto.Changeset.put_change(
