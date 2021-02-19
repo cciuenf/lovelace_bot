@@ -6,6 +6,16 @@ defmodule LovelaceIntegration.Telegram.Message do
 
   alias Ecto.Changeset
 
+  @type t() :: %__MODULE__{
+          message_id: integer(),
+          chat_id: integer(),
+          text: String.t(),
+          user_id: integer(),
+          is_bot: boolean(),
+          from: map(),
+          reply_to_message: map()
+        }
+
   embedded_schema do
     field :message_id, :integer
     field :chat_id, :integer
