@@ -5,7 +5,9 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewUserHandler do
 
   require Logger
 
-  alias LovelaceIntegration.Telegram.{Client, Message}
+  alias LovelaceIntegration.Telegram
+  alias LovelaceIntegration.Telegram.{Client, Message, ChatMember}
+
   @behaviour LovelaceIntegration.Telegram.Handlers
 
   @restrictions %{
@@ -50,8 +52,16 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewUserHandler do
     }
     |> Client.get_chat_member()
     |> case do
-      {:ok, _} ->
-        {:ok, msg}
+      {:ok, %{body: body}} ->
+        {:ok, %ChatMember{status: status}} = body |> Telegram.build_chat_member()
+
+        if status =~ "restricted" do
+          Logger.info("User #{u_id} restricted in chat: #{c_id}")
+
+          {:error, :already_restricted}
+        else
+          {:ok, msg}
+        end
 
       error ->
         error
