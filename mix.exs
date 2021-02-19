@@ -66,7 +66,8 @@ defmodule Lovelace.MixProject do
       setup: ["deps.get", "ecto.setup", "cmd yarn --cwd assets"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
-      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"]
+      test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
+      check: ["credo --strict", "format --check-formatted", "dialyzer --format dialyxir"]
     ]
   end
 end

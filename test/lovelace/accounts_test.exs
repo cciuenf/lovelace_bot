@@ -6,9 +6,24 @@ defmodule Lovelace.AccountsTest do
   describe "users" do
     alias Lovelace.Accounts.User
 
-    @valid_attrs %{first_name: "some first_name", is_professor?: true, telegram_id: 42, telegram_username: "some telegram_username"}
-    @update_attrs %{first_name: "some updated first_name", is_professor?: false, telegram_id: 43, telegram_username: "some updated telegram_username"}
-    @invalid_attrs %{first_name: nil, is_professor?: nil, telegram_id: nil, telegram_username: nil}
+    @valid_attrs %{
+      first_name: "some first_name",
+      is_professor?: true,
+      telegram_id: 42,
+      telegram_username: "some telegram_username"
+    }
+    @update_attrs %{
+      first_name: "some updated first_name",
+      is_professor?: false,
+      telegram_id: 43,
+      telegram_username: "some updated telegram_username"
+    }
+    @invalid_attrs %{
+      first_name: nil,
+      is_professor?: nil,
+      telegram_id: nil,
+      telegram_username: nil
+    }
 
     def user_fixture(attrs \\ %{}) do
       {:ok, user} =

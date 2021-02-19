@@ -38,7 +38,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.UserHandler do
     end
   end
 
-  def handle(%Callback{data: "student"}) do
+  def handle(%Callback{data: "student", chat_id: c_id} = cb) do
     Application.get_env(:lovelace, :timer_ref) |> captcha_solved()
 
     %{"username" => username, "first_name" => first_name} = cb["from"]
