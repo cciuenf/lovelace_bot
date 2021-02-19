@@ -5,6 +5,19 @@ defmodule LovelaceWeb.TelegramIntegrationController do
 
   alias LovelaceIntegration.Telegram
 
+  def webhook(conn, [_, %{"callback_query" => _} = params]) do
+    with {:ok, callback_query} <- Telegram.build_callback(params["callback_query"]),
+         :ok <- Telegram.enqueue_processing!(callback_query) do
+      Logger.info("Callback enqueued for later processing")
+      send_resp(conn, 204, "")
+    else
+      err ->
+        Logger.error("Failed handling telegram webhook with #{inspect(err)}, answering 204")
+
+        send_resp(conn, 204, "")
+    end
+  end
+
   # we only match messages that start with a /, so we don't waste computer
   # power for messages that don't matter
   def webhook(conn, %{"message" => %{"text" => "/" <> _} = params}) do
@@ -20,7 +33,7 @@ defmodule LovelaceWeb.TelegramIntegrationController do
     end
   end
 
-  def webhook(conn, %{"new_chat_member" => %{"id" => _}} = params) do
+  def webhook(conn, %{"message" => %{"new_chat_member" => _}} = params) do
     with {:ok, message} <- Telegram.build_message(params),
          :ok <- Telegram.enqueue_processing!(message) do
       Logger.info("Message enqueued for later processing")

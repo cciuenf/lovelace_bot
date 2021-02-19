@@ -17,6 +17,8 @@ defmodule Lovelace.Application do
       {Phoenix.PubSub, name: Lovelace.PubSub},
       # Start the consumer for telegram messages
       Consumers.MessageHandler,
+      # Start the consumer for telegram callbacks
+      Consumers.CallbackHandler,
       # Start the Endpoint (http/https)
       LovelaceWeb.Endpoint
       # Start a worker by calling: Lovelace.Worker.start_link(arg)

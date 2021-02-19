@@ -6,9 +6,7 @@ defmodule LovelaceIntegration.Telegram do
   require Logger
 
   alias Lovelace.Events
-  alias LovelaceIntegration.Telegram.Handlers
-  alias LovelaceIntegration.Telegram.Message
-  alias LovelaceIntegration.Telegram.ChatMember
+  alias LovelaceIntegration.Telegram.{Callback, ChatMember, Handlers, Message}
 
   @doc """
   Builds a ChatMember struct from response
@@ -41,6 +39,33 @@ defmodule LovelaceIntegration.Telegram do
   end
 
   @doc """
+  Builds a callback from a telegram callback representation
+  """
+  def build_callback(params) do
+    params
+    |> Callback.cast()
+    |> case do
+      %Ecto.Changeset{valid?: true} = changeset ->
+        {:ok, Ecto.Changeset.apply_changes(changeset)}
+
+      changeset ->
+        {:error, changeset}
+    end
+  end
+
+  @doc """
+  Processes a callback with its handler
+  """
+  def process_callback(%Callback{} = cb) do
+    {:ok, handler} = cb |> Handlers.get_handler()
+
+    Logger.info("Processing callback #{inspect(cb.callback_id)} with handler #{inspect(handler)}")
+
+    cb
+    |> handler.handle()
+  end
+
+  @doc """
   Processes a message with its handler
   """
   def process_message(%Message{} = msg) do
@@ -53,10 +78,14 @@ defmodule LovelaceIntegration.Telegram do
   end
 
   @doc """
-  Enqueues processing for a message
+  Enqueues processing for a message or a callback
   Publishes it as an event in the pubsub
   """
   def enqueue_processing!(%Message{} = m) do
     Events.publish!(Events.TelegramMessage, m)
+  end
+
+  def enqueue_processing!(%Callback{} = m) do
+    Events.publish!(Events.TelegramCallback, m)
   end
 end

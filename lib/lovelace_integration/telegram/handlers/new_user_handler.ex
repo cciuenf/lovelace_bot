@@ -6,7 +6,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewUserHandler do
   require Logger
 
   alias LovelaceIntegration.Telegram
-  alias LovelaceIntegration.Telegram.{Client, Message, ChatMember}
+  alias LovelaceIntegration.Telegram.{ChatMember, Client, Message}
 
   @behaviour LovelaceIntegration.Telegram.Handlers
 
@@ -38,11 +38,23 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewUserHandler do
 
   @seconds_in_year 3_171 * 100 * 100 * 100 * 10
 
+  @captcha_countdown 40 * 1_000
+
   def handle(msg) do
     msg
     |> get_chat_member()
     |> restrict_user()
     |> challenge_user()
+    |> start_countdown()
+    |> case do
+      {:ok, ref} ->
+        Application.put_env(:lovelace, :timer_ref, ref)
+
+        {:ok, :timer_set}
+
+      _ ->
+        {:error, :timer_error}
+    end
   end
 
   defp get_chat_member(%Message{chat_id: c_id, user_id: u_id} = msg) do
@@ -91,7 +103,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewUserHandler do
 
   defp challenge_user({:error, _} = err), do: err
 
-  defp challenge_user({:ok, %Message{chat_id: c_id, message_id: m_id}}) do
+  defp challenge_user({:ok, %Message{chat_id: c_id, message_id: m_id} = msg}) do
     %{
       chat_id: c_id,
       text: welcome_text(),
@@ -100,7 +112,22 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewUserHandler do
       reply_to_message_id: m_id
     }
     |> Client.send_message()
+    |> case do
+      {:ok, _} ->
+        {:ok, msg}
+
+      error ->
+        error
+    end
   end
+
+  defp start_countdown({:error, _} = err), do: err
+
+  defp start_countdown({:ok, %Message{} = msg}) do
+    :timer.apply_after(@captcha_countdown, Client, :ban_user, [msg])
+  end
+
+  defp captcha_solved(timer_ref), do: {:ok, :cancel} = :timer.cancel(timer_ref)
 
   defp add_one_year, do: DateTime.utc_now() |> DateTime.add(@seconds_in_year, :second)
 

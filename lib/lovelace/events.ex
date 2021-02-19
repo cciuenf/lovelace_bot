@@ -9,7 +9,8 @@ defmodule Lovelace.Events do
   alias Phoenix.PubSub
 
   @events [
-    Lovelace.Events.TelegramMessage
+    Lovelace.Events.TelegramMessage,
+    Lovelace.Events.TelegramCallback
   ]
 
   @doc """
