@@ -10,6 +10,8 @@ defmodule LovelaceIntegration.Telegram.Message do
     field :message_id, :integer
     field :chat_id, :integer
     field :text, :string
+    field :user_id, :integer
+    field :is_bot, :boolean
 
     embeds_one :from, From do
       field :username, :string
@@ -28,6 +30,8 @@ defmodule LovelaceIntegration.Telegram.Message do
     |> Changeset.cast(params, [:text, :message_id, :chat_id])
     |> Changeset.validate_required([:text, :message_id])
     |> put_chat_id()
+    |> put_user_id()
+    |> put_is_bot()
     |> Changeset.cast_embed(:from, with: &from_changeset/2)
     |> Changeset.cast_embed(:reply_to_message, with: &reply_to_message_changeset/2)
   end
@@ -47,6 +51,22 @@ defmodule LovelaceIntegration.Telegram.Message do
       changeset,
       :chat_id,
       Changeset.get_change(changeset, :chat_id, params["chat"]["id"])
+    )
+  end
+
+  defp put_user_id(%Ecto.Changeset{params: params} = changeset) do
+    Ecto.Changeset.put_change(
+      changeset,
+      :user_id,
+      Changeset.get_change(changeset, :user_id, params["new_chat_member"]["id"])
+    )
+  end
+
+  defp put_is_bot(%Ecto.Changeset{params: params} = changeset) do
+    Ecto.Changeset.put_change(
+      changeset,
+      :is_bot,
+      Changeset.get_change(changeset, :is_bot, params["new_chat_member"]["is_bot"])
     )
   end
 end

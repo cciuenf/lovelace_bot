@@ -49,6 +49,7 @@ defmodule Lovelace.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:tesla, "~> 1.4.0"},
       {:hackney, "~> 1.16.0"},
+      {:toml, "~> 0.6.1"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]

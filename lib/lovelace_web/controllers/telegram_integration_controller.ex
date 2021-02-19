@@ -20,5 +20,18 @@ defmodule LovelaceWeb.TelegramIntegrationController do
     end
   end
 
+  def webhook(conn, %{"new_chat_member" => %{"id" => _}} = params) do
+    with {:ok, message} <- Telegram.build_message(params),
+         :ok <- Telegram.enqueue_processing!(message) do
+      Logger.info("Message enqueued for later processing")
+      send_resp(conn, 204, "")
+    else
+      err ->
+        Logger.error("Failed handling telegram webhook with #{inspect(err)}, answering 204")
+
+        send_resp(conn, 204, "")
+    end
+  end
+
   def webhook(conn, _params), do: send_resp(conn, 204, "")
 end

@@ -1,0 +1,21 @@
+# Config file for Telegram Captcha Bot
+
+# Bot sends this message to new users
+welcome_message = """
+Olá, seja bem-vinde ao grupo de Ciência da Computação da UENF!
+Para validar sua participação, informe seu papel no curso.
+
+Caso não responsda dentro de 40 segundos, você será banido, pois será identificado como um bot.
+"""
+
+# Edit welcome message with this text if user passed validation
+after_success_message = "Obrigado por se cadastrar!"
+
+# Edit welcome message with this text if user failed validation
+after_fail_message = "Usuário não se cadastrou, logo, foi banido."
+
+# During this time in seconds, the new user have to press the captha button
+welcome_timeout = 40
+
+# If the new user does not press the button, the bot will ban the user for this duration of time. Can be "forever" or number of minutes ("10")
+ban_duration = "forever"

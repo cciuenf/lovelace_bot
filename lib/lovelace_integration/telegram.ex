@@ -8,6 +8,22 @@ defmodule LovelaceIntegration.Telegram do
   alias Lovelace.Events
   alias LovelaceIntegration.Telegram.Handlers
   alias LovelaceIntegration.Telegram.Message
+  alias LovelaceIntegration.Telegram.ChatMember
+
+  @doc """
+  Builds a ChatMember struct from response
+  """
+  def build_chat_member(params) do
+    params
+    |> ChatMember.cast()
+    |> case do
+      %Ecto.Changeset{valid?: true} = changeset ->
+        {:ok, Ecto.Changeset.apply_changes(changeset)}
+
+      changeset ->
+        {:error, changeset}
+    end
+  end
 
   @doc """
   Builds a message from a telegram message representation
