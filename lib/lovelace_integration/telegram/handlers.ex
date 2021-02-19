@@ -18,8 +18,8 @@ defmodule LovelaceIntegration.Telegram.Handlers do
   @doc """
   Matches a message with its handler module
   """
-  def get_hadler(%Message{user_id: user_id}) when not is_nil(user_id), do: {:ok, NewMemberHandler}
-  def get_handler(%Message{text: "/help" <> ""}), do: {:ok, HelpHandler}
+  def get_hadler(%Message{text: "new_user"}), do: {:ok, NewMemberHandler}
+  def get_handler(%Message{text: "/help"}), do: {:ok, HelpHandler}
 
   @doc """
   Matches a callback with its handler module

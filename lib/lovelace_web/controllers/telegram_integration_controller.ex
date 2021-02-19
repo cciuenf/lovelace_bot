@@ -12,7 +12,9 @@ defmodule LovelaceWeb.TelegramIntegrationController do
       send_resp(conn, 204, "")
     else
       err ->
-        Logger.error("Failed handling telegram webhook with #{inspect(err)}, answering 204")
+        Logger.error(
+          "Failed handling telegram callback query with #{inspect(err)}, answering 204"
+        )
 
         send_resp(conn, 204, "")
     end
@@ -23,24 +25,30 @@ defmodule LovelaceWeb.TelegramIntegrationController do
   def webhook(conn, %{"message" => %{"text" => "/" <> _} = params}) do
     with {:ok, message} <- Telegram.build_message(params),
          :ok <- Telegram.enqueue_processing!(message) do
-      Logger.info("Message enqueued for later processing")
+      Logger.info("Command Message enqueued for later processing")
       send_resp(conn, 204, "")
     else
       err ->
-        Logger.error("Failed handling telegram webhook with #{inspect(err)}, answering 204")
+        Logger.error("Failed handling telegram command with #{inspect(err)}, answering 204")
 
         send_resp(conn, 204, "")
     end
   end
 
-  def webhook(conn, %{"message" => %{"new_chat_member" => _}} = params) do
+  def webhook(conn, %{"message" => %{"new_chat_member" => _} = params}) do
+    params =
+      params
+      |> Map.put("text", "new_user")
+
     with {:ok, message} <- Telegram.build_message(params),
          :ok <- Telegram.enqueue_processing!(message) do
-      Logger.info("Message enqueued for later processing")
+      Logger.info("New User Message enqueued for later processing")
       send_resp(conn, 204, "")
     else
       err ->
-        Logger.error("Failed handling telegram webhook with #{inspect(err)}, answering 204")
+        Logger.error(
+          "Failed handling telegram new_chat_member with #{inspect(err)}, answering 204"
+        )
 
         send_resp(conn, 204, "")
     end
