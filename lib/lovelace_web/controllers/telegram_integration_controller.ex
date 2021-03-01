@@ -5,7 +5,7 @@ defmodule LovelaceWeb.TelegramIntegrationController do
 
   alias LovelaceIntegration.Telegram
 
-  def webhook(conn, [_, %{"callback_query" => _} = params]) do
+  def webhook(conn, %{"callback_query" => _} = params) do
     with {:ok, callback_query} <- Telegram.build_callback(params["callback_query"]),
          :ok <- Telegram.enqueue_processing!(callback_query) do
       Logger.info("Callback enqueued for later processing")

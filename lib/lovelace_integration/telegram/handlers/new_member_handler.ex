@@ -65,7 +65,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
     |> Client.get_chat_member()
     |> case do
       {:ok, %{body: body}} ->
-        {:ok, %ChatMember{status: status}} = body |> Telegram.build_chat_member()
+        {:ok, %ChatMember{status: status}} = body["result"] |> Telegram.build_chat_member()
 
         if status =~ "restricted" do
           Logger.info("User #{u_id} restricted in chat: #{c_id}")
@@ -85,11 +85,13 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
   defp restrict_user({:ok, %Message{chat_id: c_id, user_id: u_id} = msg}) do
     Logger.info("User #{u_id} joined the chat: #{c_id}")
 
+    restrict_time = restrict_time()
+
     %{
       chat_id: c_id,
       user_id: u_id,
       permissions: @restrictions,
-      until_date: add_one_year()
+      until_date: restrict_time
     }
     |> Client.restrict_user()
     |> case do
@@ -127,19 +129,34 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
     params = %{
       chat_id: c_id,
       user_id: u_id,
-      until_date: add_one_year()
+      until_date: forever()
     }
 
     :timer.apply_after(@captcha_countdown, Client, :ban_user, [params])
   end
 
-  defp add_one_year do
+  defp forever do
     DateTime.utc_now()
     |> DateTime.add(@seconds_in_year, :second)
     |> DateTime.to_unix()
   end
 
-  defp welcome_text, do: config_file_path() |> Toml.decode_file!() |> Map.get("welcome_message")
+  defp restrict_time do
+    config_ban_time = Application.get_env(:lovelace, :bot_config)[:ban_duration]
 
-  defp config_file_path, do: Application.get_env(:lovelace, :config_path)
+    cond do
+      config_ban_time == :forever ->
+        forever()
+
+      is_integer(config_ban_time) and config_ban_time > 0 ->
+        DateTime.utc_now()
+        |> DateTime.add(config_ban_time * 60, :second)
+        |> DateTime.to_unix()
+
+      true ->
+        forever()
+    end
+  end
+
+  defp welcome_text, do: Application.get_env(:lovelace, :bot_config)[:welcome_message]
 end

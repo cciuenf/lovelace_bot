@@ -24,6 +24,18 @@ config :tesla, adapter: Tesla.Adapter.Hackney
 
 config :lovelace, pubsub_channel: Lovelace.PubSub
 
+config :lovelace, :bot_config,
+  welcome_timeout: 40,
+  ban_duration: :forever,
+  after_success_message: "Obrigado por se cadastrar!",
+  after_fail_message: "Usuário não se cadastrou, logo, foi banide.",
+  welcome_message: """
+  Olá, seja bem-vinde ao grupo de Ciência da Computação da UENF!
+  Para validar sua participação, informe seu papel no curso.
+
+  Caso não responda dentro de 40 segundos, você será banide, pois será identificade como um bot.
+  """
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

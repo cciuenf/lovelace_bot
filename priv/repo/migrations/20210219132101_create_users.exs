@@ -4,7 +4,7 @@ defmodule Lovelace.Repo.Migrations.CreateUsers do
   def change do
     create table(:users, primary_key: false) do
       add :id, :binary_id, primary_key: true
-      add :first_name, :string
+      add :full_name, :string
       add :telegram_username, :string
       add :telegram_id, :integer
       add :is_professor?, :boolean, default: false, null: false

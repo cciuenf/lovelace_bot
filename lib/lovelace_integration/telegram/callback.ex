@@ -13,6 +13,8 @@ defmodule LovelaceIntegration.Telegram.Callback do
           data: String.t()
         }
 
+  @cast_fields [:callback_id, :data, :user_id, :chat_id]
+
   embedded_schema do
     field :callback_id, :integer
     field :user_id, :integer
@@ -20,23 +22,29 @@ defmodule LovelaceIntegration.Telegram.Callback do
     field :data, :string
 
     embeds_one :from, From do
-      field :first_name, :string
       field :username, :string
+      field :first_name, :string
+      field :last_name, :string
     end
   end
 
   def cast(params) do
     %__MODULE__{}
-    |> Changeset.cast(params, [:text, :message_id])
-    |> Changeset.validate_required([:text, :message_id])
+    |> Changeset.cast(params, @cast_fields)
+    |> Changeset.validate_required([:data])
     |> put_chat_id()
     |> put_user_id()
     |> put_callback_id()
     |> Changeset.cast_embed(:from, with: &from_changeset/2)
   end
 
-  defp from_changeset(schema, params),
-    do: Changeset.cast(schema, params, [:username, :first_name])
+  defp from_changeset(schema, params) do
+    if !params["from"]["username"] do
+      Changeset.cast(schema, params, [:first_name, :last_name])
+    else
+      Changeset.cast(schema, params, [:first_name, :last_name, :username])
+    end
+  end
 
   defp put_user_id(%Ecto.Changeset{params: params} = changeset) do
     Ecto.Changeset.put_change(
