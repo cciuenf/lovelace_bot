@@ -6,14 +6,16 @@ defmodule LovelaceIntegration.Telegram.Message do
 
   alias Ecto.Changeset
 
+  @primary_key_opts {:id, :integer, autogenerate: false}
+
   @type t() :: %__MODULE__{
           message_id: integer(),
           chat_id: integer(),
           text: String.t(),
           user_id: integer(),
-          is_bot: boolean(),
           from: map(),
-          reply_to_message: map()
+          reply_to_message: map(),
+          new_chat_member: map()
         }
 
   embedded_schema do
@@ -21,13 +23,17 @@ defmodule LovelaceIntegration.Telegram.Message do
     field :chat_id, :integer
     field :text, :string
     field :user_id, :integer
-    field :is_bot, :boolean
 
-    embeds_one :from, From do
+    embeds_one :from, From, primary_key: @primary_key_opts do
       field :username, :string
     end
 
-    embeds_one :reply_to_message, ReplyToMessage do
+    embeds_one :new_chat_member, NewChartMember, primary_key: @primary_key_opts do
+      field :is_bot, :boolean
+      field :username, :string
+    end
+
+    embeds_one :reply_to_message, ReplyToMessage, primary_key: @primary_key_opts do
       field :chat_id, :integer
       field :message_id, :integer
       field :text, :string
@@ -41,14 +47,17 @@ defmodule LovelaceIntegration.Telegram.Message do
     |> Changeset.validate_required([:text, :message_id])
     |> put_chat_id()
     |> put_user_id()
-    |> put_is_bot()
     |> Changeset.cast_embed(:from, with: &from_changeset/2)
     |> Changeset.cast_embed(:reply_to_message, with: &reply_to_message_changeset/2)
+    |> Changeset.cast_embed(:new_chat_member, with: &new_chat_member_changeset/2)
   end
+
+  defp new_chat_member_changeset(schema, params),
+    do: Changeset.cast(schema, params, [:is_bot, :username, :id])
 
   defp reply_to_message_changeset(schema, params) do
     schema
-    |> Changeset.cast(params, [:text, :message_id, :chat_id])
+    |> Changeset.cast(params, [:text, :message_id, :chat_id, :id])
     |> Changeset.validate_required([:text, :message_id])
     |> put_chat_id()
     |> Changeset.cast_embed(:from, with: &from_changeset/2)
@@ -69,14 +78,6 @@ defmodule LovelaceIntegration.Telegram.Message do
       changeset,
       :user_id,
       Changeset.get_change(changeset, :user_id, params["new_chat_member"]["id"])
-    )
-  end
-
-  defp put_is_bot(%Ecto.Changeset{params: params} = changeset) do
-    Ecto.Changeset.put_change(
-      changeset,
-      :is_bot,
-      Changeset.get_change(changeset, :is_bot, params["new_chat_member"]["is_bot"])
     )
   end
 end

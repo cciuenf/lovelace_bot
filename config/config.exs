@@ -2,7 +2,7 @@ import Config
 
 config :lovelace,
   ecto_repos: [Lovelace.Repo],
-  generators: [binary_id: true]
+  generators: [binary_id: false]
 
 # Configures the endpoint
 config :lovelace, LovelaceWeb.Endpoint,
@@ -25,6 +25,7 @@ config :tesla, adapter: Tesla.Adapter.Hackney
 config :lovelace, pubsub_channel: Lovelace.PubSub
 
 config :lovelace, :bot_config,
+  bot_id: 1_599_759_996,
   welcome_timeout: 40,
   ban_duration: :forever,
   after_success_message: "Obrigado por se cadastrar!",

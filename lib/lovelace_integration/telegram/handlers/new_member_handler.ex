@@ -36,11 +36,15 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
     ]
   }
 
+  @bot_id Application.get_env(:lovelace, :bot_config)[:bot_id]
+
   @seconds_in_year 3_171 * 100 * 100 * 100 * 10
 
   @captcha_countdown 40 * 1_000
 
-  def handle(msg) do
+  def handle(%Message{new_chat_member: nm} = msg) when nm.id != @bot_id do
+    Logger.info("CHANGESET - #{inspect(msg)}")
+
     msg
     |> get_chat_member()
     |> restrict_user()
@@ -57,6 +61,8 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
         {:error, :timer_error}
     end
   end
+
+  def handle(_), do: {:ok, :lovelace_joined}
 
   defp get_chat_member(%Message{chat_id: c_id, user_id: u_id} = msg) do
     %{

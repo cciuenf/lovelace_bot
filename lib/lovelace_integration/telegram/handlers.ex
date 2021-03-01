@@ -9,6 +9,7 @@ defmodule LovelaceIntegration.Telegram.Handlers do
   alias LovelaceIntegration.Telegram.Handlers.{
     DefaultHandler,
     HelpHandler,
+    UnkownHandler,
     NewMemberHandler,
     LeftMemberHandler,
     UserHandler
@@ -19,7 +20,8 @@ defmodule LovelaceIntegration.Telegram.Handlers do
   @doc """
   Matches a message with its handler module
   """
-  def get_handler(%Message{text: "/help"}), do: {:ok, HelpHandler}
+  def get_handler(%Message{text: "/ajuda"}), do: {:ok, HelpHandler}
+  def get_handler(%Message{text: "/" <> _}), do: {:ok, UnkownHandler}
   def get_handler(%Message{text: "new_user"}), do: {:ok, NewMemberHandler}
   def get_handler(%Message{text: "left_user"}), do: {:ok, LeftMemberHandler}
 
