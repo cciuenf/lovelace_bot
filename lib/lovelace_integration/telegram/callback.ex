@@ -22,6 +22,7 @@ defmodule LovelaceIntegration.Telegram.Callback do
 
     use Ecto.Schema
 
+    @primary_key {:id, :integer, autogenerate: false}
     embedded_schema do
       field :username, :string
       field :first_name, :string
@@ -62,9 +63,9 @@ defmodule LovelaceIntegration.Telegram.Callback do
 
   defp from_changeset(schema, params) do
     if params["from"]["username"] do
-      Changeset.cast(schema, params, [:first_name, :last_name, :username])
+      Changeset.cast(schema, params, [:first_name, :last_name, :username, :id])
     else
-      Changeset.cast(schema, params, [:first_name, :last_name])
+      Changeset.cast(schema, params, [:first_name, :last_name, :id])
     end
   end
 

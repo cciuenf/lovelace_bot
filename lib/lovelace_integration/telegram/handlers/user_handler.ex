@@ -79,8 +79,12 @@ defmodule LovelaceIntegration.Telegram.Handlers.UserHandler do
 
   defp check_cb_ownership(%Callback{message: msg, from: from} = cb) do
     if msg.reply_to_message.from.id != from.id do
+      Logger.info("A user not challenged solved the captcha...")
+
       {:error, :other_user}
     else
+      Logger.info("The correct user solved the captcha!")
+
       {:ok, cb}
     end
   end

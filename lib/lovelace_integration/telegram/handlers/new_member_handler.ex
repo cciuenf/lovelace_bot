@@ -62,7 +62,11 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
     end
   end
 
-  def handle(_), do: {:ok, :lovelace_joined}
+  def handle(_) do
+    Logger.info("Lovelace Bot joined in a group!")
+
+    {:ok, :lovelace_joined}
+  end
 
   defp get_chat_member(%Message{chat_id: c_id, user_id: u_id} = msg) do
     %{
