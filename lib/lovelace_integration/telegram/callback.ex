@@ -39,10 +39,10 @@ defmodule LovelaceIntegration.Telegram.Callback do
   end
 
   defp from_changeset(schema, params) do
-    if !params["from"]["username"] do
-      Changeset.cast(schema, params, [:first_name, :last_name])
-    else
+    if params["from"]["username"] do
       Changeset.cast(schema, params, [:first_name, :last_name, :username])
+    else
+      Changeset.cast(schema, params, [:first_name, :last_name])
     end
   end
 
