@@ -7,19 +7,19 @@ defmodule Lovelace.AccountsTest do
     alias Lovelace.Accounts.User
 
     @valid_attrs %{
-      first_name: "some first_name",
+      full_name: "some first_name",
       is_professor?: true,
       telegram_id: 42,
       telegram_username: "some telegram_username"
     }
     @update_attrs %{
-      first_name: "some updated first_name",
+      full_name: "some updated first_name",
       is_professor?: false,
       telegram_id: 43,
       telegram_username: "some updated telegram_username"
     }
     @invalid_attrs %{
-      first_name: nil,
+      full_name: nil,
       is_professor?: nil,
       telegram_id: nil,
       telegram_username: nil
@@ -46,7 +46,7 @@ defmodule Lovelace.AccountsTest do
 
     test "create_user/1 with valid data creates a user" do
       assert {:ok, %User{} = user} = Accounts.create_user(@valid_attrs)
-      assert user.first_name == "some first_name"
+      assert user.full_name == "some first_name"
       assert user.is_professor? == true
       assert user.telegram_id == 42
       assert user.telegram_username == "some telegram_username"
@@ -59,7 +59,7 @@ defmodule Lovelace.AccountsTest do
     test "update_user/2 with valid data updates the user" do
       user = user_fixture()
       assert {:ok, %User{} = user} = Accounts.update_user(user, @update_attrs)
-      assert user.first_name == "some updated first_name"
+      assert user.full_name == "some updated first_name"
       assert user.is_professor? == false
       assert user.telegram_id == 43
       assert user.telegram_username == "some updated telegram_username"
