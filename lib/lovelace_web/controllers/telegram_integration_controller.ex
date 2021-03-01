@@ -35,6 +35,25 @@ defmodule LovelaceWeb.TelegramIntegrationController do
     end
   end
 
+  def webhook(conn, %{"message" => %{"left_chat_member" => %{"id" => id}} = params}) do
+    params =
+      params
+      |> Map.put("text", "left_user")
+
+    with true <- Application.get_env(:lovelace, :user_id) == id,
+         true <- Application.get_env(:lovelace, :timer_ref) |> is_nil(),
+         {:ok, message} <- Telegram.build_message(params),
+         :ok <- Telegram.enqueue_processing!(message) do
+      Logger.info("Left User Message enqueued for later processing")
+      send_resp(conn, 204, "")
+    else
+      err ->
+        Logger.error("Failed handling telegram command with #{inspect(err)}, answering 204")
+
+        send_resp(conn, 204, "")
+    end
+  end
+
   def webhook(conn, %{"message" => %{"new_chat_member" => _} = params}) do
     params =
       params

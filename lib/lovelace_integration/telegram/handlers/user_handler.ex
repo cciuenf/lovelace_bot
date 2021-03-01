@@ -24,37 +24,65 @@ defmodule LovelaceIntegration.Telegram.Handlers.UserHandler do
   }
 
   def handle(%Callback{data: "professor"} = cb) do
-    Application.get_env(:lovelace, :timer_ref) |> captcha_solved()
+    case check_cb_ownership(cb) do
+      {:ok, cb} ->
+        Application.get_env(:lovelace, :timer_ref) |> captcha_solved()
 
-    {username, full_name} = get_user_info(cb)
+        {username, full_name} = get_user_info(cb)
 
-    msg_text = "O usuário #{username} passou no captcha e se registrou como Professor!"
+        msg_text = "O usuário #{username} passou no captcha e se registrou como Professor!"
 
-    %{
-      is_professor?: true,
-      telegram_id: cb.user_id,
-      telegram_username: username,
-      full_name: full_name
-    }
-    |> Accounts.create_user()
-    |> post_challenge(cb, msg_text)
+        %{
+          is_professor?: true,
+          telegram_id: cb.user_id,
+          telegram_username: username,
+          full_name: full_name
+        }
+        |> Accounts.create_user()
+        |> post_challenge(cb, msg_text)
+
+      {:error, :other_user} ->
+        %{
+          chat_id: cb.chat_id,
+          text: "Esse captcha não é para você..."
+        }
+        |> Client.send_message()
+    end
   end
 
   def handle(%Callback{data: "student"} = cb) do
-    Application.get_env(:lovelace, :timer_ref) |> captcha_solved()
+    case check_cb_ownership(cb) do
+      {:ok, cb} ->
+        Application.get_env(:lovelace, :timer_ref) |> captcha_solved()
 
-    {username, full_name} = get_user_info(cb)
+        {username, full_name} = get_user_info(cb)
 
-    msg_text = "O usuário #{username} passou no captcha e se registrou como Aluno!"
+        msg_text = "O usuário #{username} passou no captcha e se registrou como Aluno!"
 
-    %{
-      is_professor?: false,
-      telegram_id: cb.user_id,
-      telegram_username: username,
-      full_name: full_name
-    }
-    |> Accounts.create_user()
-    |> post_challenge(cb, msg_text)
+        %{
+          is_professor?: false,
+          telegram_id: cb.user_id,
+          telegram_username: username,
+          full_name: full_name
+        }
+        |> Accounts.create_user()
+        |> post_challenge(cb, msg_text)
+
+      {:error, :other_user} ->
+        %{
+          chat_id: cb.chat_id,
+          text: "Esse captcha não é para você..."
+        }
+        |> Client.send_message()
+    end
+  end
+
+  defp check_cb_ownership(%Callback{message: msg, from: from} = cb) do
+    if msg.reply_to_message.from.id != from.id do
+      {:error, :other_user}
+    else
+      {:ok, cb}
+    end
   end
 
   defp post_challenge({:ok, _body}, cb, text) do
@@ -63,19 +91,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.UserHandler do
       text: text
     }
     |> Client.send_message()
-    |> case do
-      {:ok, _res} ->
-        %{
-          chat_id: cb.chat_id,
-          user_id: cb.user_id,
-          permissions: @restrictions,
-          until_date: forever()
-        }
-        |> Client.restrict_user()
-
-      {:error, _reason} = error ->
-        error
-    end
+    |> unrestrict_user(cb)
   end
 
   defp post_challenge({:error, changeset} = error, cb, _text) do
@@ -84,6 +100,29 @@ defmodule LovelaceIntegration.Telegram.Handlers.UserHandler do
 
     error
   end
+
+  defp unrestrict_user({:ok, _}, cb) do
+    %{
+      chat_id: cb.chat_id,
+      user_id: cb.user_id,
+      permissions: @restrictions,
+      until_date: forever()
+    }
+    |> Client.restrict_user()
+    |> case do
+      {:ok, _} ->
+        %{
+          chat_id: cb.chat_id,
+          message_id: cb.message.reply_to_message.message_id + 1
+        }
+        |> Client.delete_message()
+
+      {:error, _reason} = error ->
+        error
+    end
+  end
+
+  defp unrestrict_user(error, _), do: error
 
   defp forever do
     DateTime.utc_now()

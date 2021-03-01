@@ -10,6 +10,7 @@ defmodule LovelaceIntegration.Telegram.Handlers do
     DefaultHandler,
     HelpHandler,
     NewMemberHandler,
+    LeftMemberHandler,
     UserHandler
   }
 
@@ -20,6 +21,7 @@ defmodule LovelaceIntegration.Telegram.Handlers do
   """
   def get_handler(%Message{text: "/help"}), do: {:ok, HelpHandler}
   def get_handler(%Message{text: "new_user"}), do: {:ok, NewMemberHandler}
+  def get_handler(%Message{text: "left_user"}), do: {:ok, LeftMemberHandler}
 
   def get_handler(%Callback{}), do: {:ok, UserHandler}
 

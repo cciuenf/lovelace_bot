@@ -42,6 +42,13 @@ defmodule LovelaceIntegration.Telegram.Client do
     build_and_send(&post/2, "/kickChatMember", ClientInputs.KickChatMember, params)
   end
 
+  @doc """
+  Calls the deleteMessage method in the telegram api
+  """
+  def delete_message(params) do
+    build_and_send(&post/2, "/deleteMessage", ClientInputs.DeleteMessage, params)
+  end
+
   defp build_and_send(fun, route, module, params) do
     {:ok, input} = params |> module.build()
 
