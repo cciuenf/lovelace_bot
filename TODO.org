@@ -2,17 +2,17 @@
 #+author: Matheus de Souza Pessanha
 
 ** Funcionalidades
-[x] "Cadastro" de professores e alunos
-[x] Modelagem dos papéis e suas permissões
+- [x] "Cadastro" de professores e alunos
+- [x] Modelagem dos papéis e suas permissões
 
 Mais por vir...
 
 *** Comandos à serem implementados:
-[ ] Mostrar o ranking geral dos desafios
-[ ] Trazer uma solução específica de um desafio
-[x] Promover usuário
-[x] Restringir permissão de um usuário
-[ ] Banir um usuário
-[ ] Listar todos os alunos
+- [ ] Mostrar o ranking geral dos desafios
+- [ ] Trazer uma solução específica de um desafio
+- [x] Promover usuário
+- [x] Restringir permissão de um usuário
+- [ ] Banir um usuário
+- [ ] Listar todos os alunos
 
 Em construção...
