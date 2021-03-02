@@ -11,6 +11,7 @@ defmodule LovelaceIntegration.Telegram.Handlers do
     HelpHandler,
     LeftMemberHandler,
     NewMemberHandler,
+    RoleChangeHandler,
     UnkownHandler,
     UserHandler
   }
@@ -21,9 +22,12 @@ defmodule LovelaceIntegration.Telegram.Handlers do
   Matches a message with its handler module
   """
   def get_handler(%Message{text: "/ajuda"}), do: {:ok, HelpHandler}
-  def get_handler(%Message{text: "/" <> _}), do: {:ok, UnkownHandler}
   def get_handler(%Message{text: "new_user"}), do: {:ok, NewMemberHandler}
   def get_handler(%Message{text: "left_user"}), do: {:ok, LeftMemberHandler}
+  def get_handler(%Message{text: "/roleadd" <> " " <> _}), do: {:ok, RoleChangeHandler}
+  def get_handler(%Message{text: "/roleremove" <> " " <> _}), do: {:ok, RoleChangeHandler}
+
+  def get_handler(%Message{text: "/" <> _}), do: {:ok, UnkownHandler}
 
   def get_handler(%Callback{}), do: {:ok, UserHandler}
 

@@ -5,7 +5,7 @@ defmodule LovelaceIntegration.Telegram.Client do
 
   use Tesla
 
-  alias LovelaceIntegration.Telegram.ClientInputs
+  alias LovelaceIntegration.Telegram.{ClientInputs, Message}
 
   defp bot_token, do: Application.get_env(:lovelace, __MODULE__)[:bot_token]
 
@@ -47,6 +47,19 @@ defmodule LovelaceIntegration.Telegram.Client do
   """
   def delete_message(params) do
     build_and_send(&post/2, "/deleteMessage", ClientInputs.DeleteMessage, params)
+  end
+
+  @doc """
+  Sends a message saying that the user had requested
+  a action that's outside of his scope
+  """
+  def unauthenticated(%Message{} = msg) do
+    %{
+      chat_id: msg.chat_id,
+      text: "Você não têm permissões suficientes para executar esse comando...",
+      reply_to_message_id: msg.message_id
+    }
+    |> send_message()
   end
 
   defp build_and_send(fun, route, module, params) do

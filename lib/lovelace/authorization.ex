@@ -15,7 +15,21 @@ defmodule Lovelace.Accounts.Authorization do
 
   @professor_permissions @admin_permissions ++ ~w(can_send_notices)a
 
-  def can?(query, action) when is_list(query) and is_atom(action) do
+  @doc """
+  Checks if a given user can execute a given action
+
+  ## Examples
+
+     iex> can?(user, action)
+     true
+
+     iex> can?(query, action)
+     true
+
+     iex> can?(user, action)
+     false
+  """
+  def can?(query, action) when is_list(query) and action in @professor_permissions do
     case Accounts.get_user_by(query) do
       {:ok, %{roles: roles}} ->
         if subset?(roles, @roles) do
@@ -29,9 +43,10 @@ defmodule Lovelace.Accounts.Authorization do
     end
   end
 
-  def can?(%User{} = user, action) when is_atom(action), do: user.roles |> can?(action)
+  def can?(%User{} = user, action) when action in @professor_permissions,
+    do: user.roles |> can?(action)
 
-  def can?(roles, action) when is_atom(action) do
+  def can?(roles, action) when action in @professor_permissions do
     cond do
       is_professor?(roles) ->
         if action in @professor_permissions, do: true, else: false
@@ -49,9 +64,28 @@ defmodule Lovelace.Accounts.Authorization do
 
   def can?(_, _), do: false
 
-  defp subset?(values, set), do: Enum.any?(values, fn x -> x in set end)
+  @doc """
+  Check if a fiven list is a subset of a major list
 
-  defp is_admin?(roles), do: "admin" in roles
-  defp is_student?(roles), do: "student" in roles
-  defp is_professor?(roles), do: "professor" in roles
+  ## Examples
+
+     iex> subset?(["student"], @roles)
+     true
+  """
+  def subset?(values, set), do: Enum.any?(values, fn x -> x in set end)
+
+  @doc """
+  Given some roles, check if it is a admin
+  """
+  def is_admin?(roles), do: "admin" in roles
+
+  @doc """
+  Given some roles, check if it is a student
+  """
+  def is_student?(roles), do: "student" in roles
+
+  @doc """
+  Givensome roles, check if it is a professor
+  """
+  def is_professor?(roles), do: "professor" in roles
 end
