@@ -9,6 +9,5 @@ defmodule Lovelace.Repo.Migrations.CreateChallenges do
 
       timestamps()
     end
-
   end
 end
