@@ -68,17 +68,17 @@ defmodule Lovelace.Accounts.User do
     |> change(%{roles: ["student"]})
   end
 
-  defp roles_are_subset?(_, value, data, opts \\ [message: "is invalid"]) do
+  defp roles_are_subset?(_, value, data) do
     if Enum.any?(value, fn x -> x in data end) do
       []
     else
-      [{:roles, opts[:message]}]
+      [{:roles, "is invalid"}]
     end
   end
 
-  defp validate_inclusion_within(%Ecto.Changeset{} = changeset, field, data, opts \\ []) do
+  defp validate_inclusion_within(%Ecto.Changeset{} = changeset, field, data) do
     changeset
-    |> validate_change(field, &roles_are_subset?(&1, &2, data, opts))
+    |> validate_change(field, &roles_are_subset?(&1, &2, data))
   end
 
   def roles, do: @roles
