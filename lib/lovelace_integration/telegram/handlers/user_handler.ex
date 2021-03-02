@@ -33,12 +33,11 @@ defmodule LovelaceIntegration.Telegram.Handlers.UserHandler do
         msg_text = "O usuário #{username} passou no captcha e se registrou como Professor!"
 
         %{
-          is_professor?: true,
           telegram_id: cb.user_id,
           telegram_username: username,
           full_name: full_name
         }
-        |> Accounts.create_user()
+        |> Accounts.create_professor()
         |> post_challenge(cb, msg_text)
 
       {:error, :other_user} ->
@@ -60,12 +59,11 @@ defmodule LovelaceIntegration.Telegram.Handlers.UserHandler do
         msg_text = "O usuário #{username} passou no captcha e se registrou como Aluno!"
 
         %{
-          is_professor?: false,
           telegram_id: cb.user_id,
           telegram_username: username,
           full_name: full_name
         }
-        |> Accounts.create_user()
+        |> Accounts.create_student()
         |> post_challenge(cb, msg_text)
 
       {:error, :other_user} ->

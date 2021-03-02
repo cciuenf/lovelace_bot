@@ -13,7 +13,7 @@ defmodule Lovelace.Accounts.Authorization do
   @admin_permissions @student_permissions ++
                        ~w(can_list_users can_ban_user can_restrict_user can_promote_user)a
 
-  @professor_permissions @admin_permissions ++ ~w(can_send_priv_msg)a
+  @professor_permissions @admin_permissions ++ ~w(can_send_notices)a
 
   def can?(query, action) when is_list(query) and is_atom(action) do
     case Accounts.get_user_by(query) do
