@@ -6,21 +6,20 @@ defmodule Lovelace.AccountsTest do
   describe "users" do
     alias Lovelace.Accounts.User
 
+    @roles User.roles()
+
     @valid_attrs %{
       full_name: "some first_name",
-      is_professor?: true,
       telegram_id: 42,
       telegram_username: "some telegram_username"
     }
     @update_attrs %{
       full_name: "some updated first_name",
-      is_professor?: false,
       telegram_id: 43,
       telegram_username: "some updated telegram_username"
     }
     @invalid_attrs %{
       full_name: nil,
-      is_professor?: nil,
       telegram_id: nil,
       telegram_username: nil
     }
@@ -34,9 +33,37 @@ defmodule Lovelace.AccountsTest do
       user
     end
 
+    def student_fixture(attrs \\ %{}) do
+      {:ok, student} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Accounts.create_student()
+
+      student
+    end
+
+    def professor_fixture(attrs \\ %{}) do
+      {:ok, professor} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Accounts.create_professor()
+
+      professor
+    end
+
     test "list_users/0 returns all users" do
       user = user_fixture()
       assert Accounts.list_users() == [user]
+    end
+
+    test "list_students/0 returns all students" do
+      student = student_fixture()
+      assert Accounts.list_students() == [student]
+    end
+
+    test "list_professors/0 retuns all professors" do
+      professor = professor_fixture()
+      assert Accounts.list_professors() == [professor]
     end
 
     test "get_user!/1 returns the user with given id" do
@@ -47,20 +74,42 @@ defmodule Lovelace.AccountsTest do
     test "create_user/1 with valid data creates a user" do
       assert {:ok, %User{} = user} = Accounts.create_user(@valid_attrs)
       assert user.full_name == "some first_name"
-      assert user.is_professor? == true
       assert user.telegram_id == 42
       assert user.telegram_username == "some telegram_username"
+    end
+
+    test "create_student/1 with valid data creates a student" do
+      assert {:ok, %User{} = student} = Accounts.create_student(@valid_attrs)
+      assert student.full_name == "some first_name"
+      assert student.telegram_id == 42
+      assert student.telegram_username == "some telegram_username"
+      assert student.roles == ["student"]
+    end
+
+    test "create_professor/1 with valid data creates a professor" do
+      assert {:ok, %User{} = professor} = Accounts.create_professor(@valid_attrs)
+      assert professor.full_name == "some first_name"
+      assert professor.telegram_id == 42
+      assert professor.telegram_username == "some telegram_username"
+      assert professor.roles == ["professor", "admin"]
     end
 
     test "create_user/1 with invalid data returns error changeset" do
       assert {:error, %Ecto.Changeset{}} = Accounts.create_user(@invalid_attrs)
     end
 
+    test "create_professor/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Accounts.create_professor(@invalid_attrs)
+    end
+
+    test "create_student/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Accounts.create_student(@invalid_attrs)
+    end
+
     test "update_user/2 with valid data updates the user" do
       user = user_fixture()
       assert {:ok, %User{} = user} = Accounts.update_user(user, @update_attrs)
       assert user.full_name == "some updated first_name"
-      assert user.is_professor? == false
       assert user.telegram_id == 43
       assert user.telegram_username == "some updated telegram_username"
     end
@@ -68,6 +117,21 @@ defmodule Lovelace.AccountsTest do
     test "update_user/2 with invalid data returns error changeset" do
       user = user_fixture()
       assert {:error, %Ecto.Changeset{}} = Accounts.update_user(user, @invalid_attrs)
+      assert user == Accounts.get_user!(user.id)
+    end
+
+    test "update_user_role/2 with valid data updates the user role" do
+      user = user_fixture()
+      assert {:ok, %User{} = user} = Accounts.update_user_role(user, roles: @roles)
+      assert user.roles == @roles
+    end
+
+    test "update_user_role/2 with invalid data returns error changeset" do
+      user = user_fixture()
+
+      assert {:error, %Ecto.Changeset{}} =
+               Accounts.update_user_role(user, roles: ["invalid_role"])
+
       assert user == Accounts.get_user!(user.id)
     end
 
