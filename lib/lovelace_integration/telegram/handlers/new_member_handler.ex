@@ -43,8 +43,6 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
   @captcha_countdown 40 * 1_000
 
   def handle(%Message{new_chat_member: nm} = msg) when nm.id != @bot_id do
-    Logger.info("CHANGESET - #{inspect(msg)}")
-
     msg
     |> get_chat_member()
     |> restrict_user()
