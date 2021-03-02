@@ -17,30 +17,37 @@ defmodule Lovelace.Accounts.Authorization do
 
   def can?(query, action) when is_list(query) and is_atom(action) do
     case Accounts.get_user_by(query) do
-      {:ok, user} -> user |> can?(action)
-      {:error, :not_found} -> {:error, :not_found}
+      {:ok, %{roles: roles}} ->
+        if subset?(roles, @roles) do
+          roles |> can?(action)
+        else
+          false
+        end
+
+      {:error, :not_found} ->
+        false
     end
   end
 
-  def can?(%User{} = user, action) when is_atom(action) do
-    if subset?(user.roles, @roles) do
-      cond do
-        is_professor?(user.roles) ->
-          if action in @professor_permissions, do: true, else: false
+  def can?(%User{} = user, action) when is_atom(action), do: user.roles |> can?(action)
 
-        is_admin?(user.roles) ->
-          if action in @admin_permissions, do: true, else: false
+  def can?(roles, action) when is_atom(action) do
+    cond do
+      is_professor?(roles) ->
+        if action in @professor_permissions, do: true, else: false
 
-        is_student?(user.roles) ->
-          if action in @student_permissions, do: true, else: false
+      is_admin?(roles) ->
+        if action in @admin_permissions, do: true, else: false
 
-        true ->
-          if action in @student_permissions, do: true, else: false
-      end
-    else
-      false
+      is_student?(roles) ->
+        if action in @student_permissions, do: true, else: false
+
+      true ->
+        if action in @student_permissions, do: true, else: false
     end
   end
+
+  def can?(_, _), do: false
 
   defp subset?(values, set), do: Enum.any?(values, fn x -> x in set end)
 
