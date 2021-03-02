@@ -50,6 +50,7 @@ defmodule Lovelace.MixProject do
       {:tesla, "~> 1.4.0"},
       {:hackney, "~> 1.16.0"},
       {:toml, "~> 0.6.1"},
+      {:ex_machina, "~> 2.6.0", only: :test},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false},
       {:credo, "~> 1.5", only: [:dev, :test], runtime: false}
     ]

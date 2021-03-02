@@ -1,7 +1,9 @@
 defmodule Lovelace.AccountsTest do
-  use Lovelace.DataCase
+  use Lovelace.DataCase, async: true
 
   alias Lovelace.Accounts
+
+  import Lovelace.Factory
 
   describe "users" do
     alias Lovelace.Accounts.User
@@ -24,50 +26,23 @@ defmodule Lovelace.AccountsTest do
       telegram_username: nil
     }
 
-    def user_fixture(attrs \\ %{}) do
-      {:ok, user} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Accounts.create_user()
-
-      user
-    end
-
-    def student_fixture(attrs \\ %{}) do
-      {:ok, student} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Accounts.create_student()
-
-      student
-    end
-
-    def professor_fixture(attrs \\ %{}) do
-      {:ok, professor} =
-        attrs
-        |> Enum.into(@valid_attrs)
-        |> Accounts.create_professor()
-
-      professor
-    end
-
     test "list_users/0 returns all users" do
-      user = user_fixture()
+      user = insert(:user)
       assert Accounts.list_users() == [user]
     end
 
     test "list_students/0 returns all students" do
-      student = student_fixture()
+      student = insert(:student)
       assert Accounts.list_students() == [student]
     end
 
     test "list_professors/0 retuns all professors" do
-      professor = professor_fixture()
+      professor = insert(:professor)
       assert Accounts.list_professors() == [professor]
     end
 
     test "get_user!/1 returns the user with given id" do
-      user = user_fixture()
+      user = insert(:user)
       assert Accounts.get_user!(user.id) == user
     end
 
@@ -107,7 +82,7 @@ defmodule Lovelace.AccountsTest do
     end
 
     test "update_user/2 with valid data updates the user" do
-      user = user_fixture()
+      user = insert(:user)
       assert {:ok, %User{} = user} = Accounts.update_user(user, @update_attrs)
       assert user.full_name == "some updated first_name"
       assert user.telegram_id == 43
@@ -115,19 +90,19 @@ defmodule Lovelace.AccountsTest do
     end
 
     test "update_user/2 with invalid data returns error changeset" do
-      user = user_fixture()
+      user = insert(:user)
       assert {:error, %Ecto.Changeset{}} = Accounts.update_user(user, @invalid_attrs)
       assert user == Accounts.get_user!(user.id)
     end
 
     test "update_user_role/2 with valid data updates the user role" do
-      user = user_fixture()
+      user = insert(:user)
       assert {:ok, %User{} = user} = Accounts.update_user_role(user, roles: @roles)
       assert user.roles == @roles
     end
 
     test "update_user_role/2 with invalid data returns error changeset" do
-      user = user_fixture()
+      user = insert(:user)
 
       assert {:error, %Ecto.Changeset{}} =
                Accounts.update_user_role(user, roles: ["invalid_role"])
@@ -136,13 +111,13 @@ defmodule Lovelace.AccountsTest do
     end
 
     test "delete_user/1 deletes the user" do
-      user = user_fixture()
+      user = insert(:user)
       assert {:ok, %User{}} = Accounts.delete_user(user)
       assert_raise Ecto.NoResultsError, fn -> Accounts.get_user!(user.id) end
     end
 
     test "change_user/1 returns a user changeset" do
-      user = user_fixture()
+      user = insert(:user)
       assert %Ecto.Changeset{} = Accounts.change_user(user)
     end
   end

@@ -2,7 +2,7 @@ import Config
 
 config :lovelace,
   ecto_repos: [Lovelace.Repo],
-  generators: [binary_id: false]
+  generators: [binary_id: true]
 
 # Configures the endpoint
 config :lovelace, LovelaceWeb.Endpoint,
