@@ -9,9 +9,9 @@ defmodule LovelaceIntegration.Telegram.Handlers do
   alias LovelaceIntegration.Telegram.Handlers.{
     DefaultHandler,
     HelpHandler,
-    UnkownHandler,
-    NewMemberHandler,
     LeftMemberHandler,
+    NewMemberHandler,
+    UnkownHandler,
     UserHandler
   }
 

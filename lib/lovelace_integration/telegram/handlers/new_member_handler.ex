@@ -36,7 +36,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
     ]
   }
 
-  @bot_id Application.get_env(:lovelace, :bot_config)[:bot_id]
+  @bot_id Application.compile_env(:lovelace, :bot_config)[:bot_id]
 
   @seconds_in_year 3_171 * 100 * 100 * 100 * 10
 
