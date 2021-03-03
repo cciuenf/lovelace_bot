@@ -7,7 +7,7 @@ defmodule Lovelace.Repo.Migrations.CreateUsers do
       add :full_name, :string
       add :telegram_username, :string
       add :telegram_id, :integer
-      add :roles, {:array, :string}, default: ["student"]
+      add :role, :string, default: "student"
 
       timestamps()
     end

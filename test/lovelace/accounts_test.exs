@@ -58,7 +58,7 @@ defmodule Lovelace.AccountsTest do
       assert student.full_name == "some first_name"
       assert student.telegram_id == 42
       assert student.telegram_username == "some telegram_username"
-      assert student.roles == ["student"]
+      assert student.role == :student
     end
 
     test "create_professor/1 with valid data creates a professor" do
@@ -66,7 +66,7 @@ defmodule Lovelace.AccountsTest do
       assert professor.full_name == "some first_name"
       assert professor.telegram_id == 42
       assert professor.telegram_username == "some telegram_username"
-      assert professor.roles == ["professor", "admin"]
+      assert professor.role == :professor
     end
 
     test "create_user/1 with invalid data returns error changeset" do
@@ -97,16 +97,14 @@ defmodule Lovelace.AccountsTest do
 
     test "update_user_role/2 with valid data updates the user role" do
       user = insert(:user)
-      assert {:ok, %User{} = user} = Accounts.update_user_role(user, roles: @roles)
-      assert user.roles == @roles
+      role = Enum.random(@roles)
+      assert {:ok, %User{} = user} = Accounts.update_user_role(user, role: role)
+      assert user.role == role
     end
 
     test "update_user_role/2 with invalid data returns error changeset" do
       user = insert(:user)
-
-      assert {:error, %Ecto.Changeset{}} =
-               Accounts.update_user_role(user, roles: ["invalid_role"])
-
+      assert {:error, %Ecto.Changeset{}} = Accounts.update_user_role(user, role: "invalid_role")
       assert user == Accounts.get_user!(user.id)
     end
 

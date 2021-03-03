@@ -31,7 +31,7 @@ defmodule Lovelace.Accounts do
   """
   def list_students do
     from(u in User)
-    |> where([u], fragment("? @> ?", u.roles, ^["student"]))
+    |> where(role: :student)
     |> Repo.all()
   end
 
@@ -45,7 +45,7 @@ defmodule Lovelace.Accounts do
   """
   def list_admins do
     from(u in User)
-    |> where([u], fragment("? @> ?", u.roles, ^["admin"]))
+    |> where(role: :admin)
     |> Repo.all()
   end
 
@@ -59,7 +59,7 @@ defmodule Lovelace.Accounts do
   """
   def list_professors do
     from(u in User)
-    |> where([u], fragment("? @> ?", u.roles, ^["professor"]))
+    |> where(role: :professor)
     |> Repo.all()
   end
 
@@ -186,9 +186,9 @@ defmodule Lovelace.Accounts do
       {:error, %Ecto.Changeset{}}
 
   """
-  def update_user_role(%User{} = user, roles: roles) do
+  def update_user_role(%User{} = user, role: role) do
     user
-    |> User.role_changeset(%{roles: roles})
+    |> User.role_changeset(%{role: role})
     |> Repo.update()
   end
 

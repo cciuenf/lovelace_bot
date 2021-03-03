@@ -13,7 +13,7 @@ defmodule Lovelace.Accounts.User do
 
   @simple_sortings ~w(telegram_id)a
 
-  @roles ~w(student professor admin)
+  @roles ~w(student professor admin)a
 
   use Lovelace.Schema, expose: true, query: true
 
@@ -25,7 +25,7 @@ defmodule Lovelace.Accounts.User do
     field :full_name, :string
     field :telegram_id, :integer
     field :telegram_username, :string
-    field :roles, {:array, :string}, default: ["student"]
+    field :role, Ecto.Enum, values: @roles, default: :student
 
     has_many :solutions, Solution
 
@@ -46,8 +46,8 @@ defmodule Lovelace.Accounts.User do
   """
   def role_changeset(user, attrs) do
     user
-    |> cast(attrs, [:roles])
-    |> validate_inclusion_within(:roles, @roles)
+    |> cast(attrs, [:role])
+    |> validate_required([:role])
   end
 
   @doc """
@@ -56,7 +56,7 @@ defmodule Lovelace.Accounts.User do
   def professor_changeset(user, attrs) do
     user
     |> user_changeset(attrs)
-    |> change(%{roles: ["professor", "admin"]})
+    |> change(%{role: :professor})
   end
 
   @doc """
@@ -65,20 +65,7 @@ defmodule Lovelace.Accounts.User do
   def student_changeset(user, attrs) do
     user
     |> user_changeset(attrs)
-    |> change(%{roles: ["student"]})
-  end
-
-  defp roles_are_subset?(_, value, data) do
-    if Enum.any?(value, fn x -> x in data end) do
-      []
-    else
-      [{:roles, "is invalid"}]
-    end
-  end
-
-  defp validate_inclusion_within(%Ecto.Changeset{} = changeset, field, data) do
-    changeset
-    |> validate_change(field, &roles_are_subset?(&1, &2, data))
+    |> change(%{role: :student})
   end
 
   def roles, do: @roles

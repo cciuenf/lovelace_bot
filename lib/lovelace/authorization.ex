@@ -6,8 +6,6 @@ defmodule Lovelace.Accounts.Authorization do
   alias Lovelace.Accounts
   alias Lovelace.Accounts.User
 
-  @roles User.roles()
-
   @student_permissions ~w(can_list_ranking can_list challenges can_ask_definition)a
 
   @admin_permissions @student_permissions ++
@@ -31,61 +29,67 @@ defmodule Lovelace.Accounts.Authorization do
   """
   def can?(query, action) when is_list(query) and action in @professor_permissions do
     case Accounts.get_user_by(query) do
-      {:ok, %{roles: roles}} ->
-        if subset?(roles, @roles) do
-          roles |> can?(action)
-        else
-          false
-        end
+      {:ok, %{role: role}} ->
+        can?(role, action)
 
       {:error, :not_found} ->
         false
     end
   end
 
-  def can?(%User{} = user, action) when action in @professor_permissions,
-    do: user.roles |> can?(action)
+  def can?(%User{role: role}, action) when action in @professor_permissions,
+    do: can?(role, action)
 
-  def can?(roles, action) when action in @professor_permissions do
-    cond do
-      is_professor?(roles) ->
-        if action in @professor_permissions, do: true, else: false
+  def can?(:admin, action) when action in @admin_permissions, do: true
+  def can?(:admin, _action), do: false
 
-      is_admin?(roles) ->
-        if action in @admin_permissions, do: true, else: false
+  def can?(:student, action) when action in @student_permissions, do: true
+  def can?(:student, _action), do: false
 
-      is_student?(roles) ->
-        if action in @student_permissions, do: true, else: false
-
-      true ->
-        if action in @student_permissions, do: true, else: false
-    end
-  end
+  def can?(:professor, action) when action in @professor_permissions, do: true
+  def can?(:professor, _action), do: false
 
   def can?(_, _), do: false
 
   @doc """
-  Check if a fiven list is a subset of a major list
+  Given a user check if it is a admin
 
   ## Examples
 
-     iex> subset?(["student"], @roles)
+     iex> is_admin?(admin_user)
      true
+
+     iex> is_admin?(user)
+     false
   """
-  def subset?(values, set), do: Enum.any?(values, fn x -> x in set end)
+  def is_admin?(%User{role: :admin}), do: true
+  def is_admin?(_), do: false
 
   @doc """
-  Given some roles, check if it is a admin
+  Given a user check if it is a student
+
+  ## Examples
+
+     iex> is_student?(student_user)
+     true
+
+     iex> is_student?(user)
+     false
   """
-  def is_admin?(roles), do: "admin" in roles
+  def is_student?(%User{role: :student}), do: true
+  def is_student?(_), do: false
 
   @doc """
-  Given some roles, check if it is a student
-  """
-  def is_student?(roles), do: "student" in roles
+  Given a user check if it is a professor
 
-  @doc """
-  Givensome roles, check if it is a professor
+  ## Examples
+
+     iex> is_professor?(professor_user)
+     true
+
+     iex> is_professor?(user)
+     false
   """
-  def is_professor?(roles), do: "professor" in roles
+  def is_professor?(%User{role: :professor}), do: true
+  def is_professr?(_), do: false
 end

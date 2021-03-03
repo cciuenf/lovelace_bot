@@ -21,7 +21,7 @@ defmodule Lovelace.Factory do
       full_name: sequence(:name, &"Prof#{&1}"),
       telegram_id: sequence(:id, fn x -> "34#{x}56" |> String.to_integer() end),
       telegram_username: sequence(:username, &"prof#{&1}"),
-      roles: ["professor", "admin"]
+      role: :professor
     }
   end
 
@@ -30,7 +30,7 @@ defmodule Lovelace.Factory do
       full_name: sequence(:name, &"Stude#{&1}"),
       telegram_id: sequence(:id, fn x -> "78#{x}910" |> String.to_integer() end),
       telegram_username: sequence(:username, &"stude#{&1}"),
-      roles: ["student"]
+      role: :student
     }
   end
 
