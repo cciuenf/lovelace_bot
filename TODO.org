@@ -16,7 +16,7 @@ Mais por vir...
 - [x] Promover usuário
 - [x] Restringir permissão de um usuário
 - [x] Banir um usuário(s)
-- [ ] Listar todos os alunos
+- [x] Listar todos os alunos
 - [ ] Mostrar uma "agenda"
 
 Em construção...

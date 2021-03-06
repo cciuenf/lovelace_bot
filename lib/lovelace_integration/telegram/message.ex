@@ -65,7 +65,7 @@ defmodule LovelaceIntegration.Telegram.Message do
     |> Changeset.cast_embed(:from, with: &from_changeset/2)
   end
 
-  defp from_changeset(schema, params), do: Changeset.cast(schema, params, [:username])
+  defp from_changeset(schema, params), do: Changeset.cast(schema, params, [:username, :id])
 
   defp put_chat_id(%Ecto.Changeset{params: params} = changeset) do
     Ecto.Changeset.put_change(

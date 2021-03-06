@@ -7,6 +7,7 @@ defmodule LovelaceIntegration.Telegram.Helpers do
   require Logger
 
   alias Lovelace.Accounts
+  alias Lovelace.Accounts.Authorization
   alias LovelaceIntegration.Telegram.Client
 
   plug Tesla.Middleware.Headers
@@ -90,6 +91,31 @@ defmodule LovelaceIntegration.Telegram.Helpers do
   def handle_response({:ok, %{status: 200, body: body}}), do: {:ok, Jason.decode!(body)}
   def handle_response({:ok, resp = %{status: _, body: _}}), do: {:error, resp}
   def handle_response(resp = {:error, _error}), do: resp
+
+  @doc """
+  Returns all students
+  """
+  def extract_students do
+    base = ~s"""
+    <b>Alunos Cadastrados</b>
+
+    """
+
+    students =
+      Accounts.list_users()
+      |> Enum.filter(&(&1.role != :professor))
+
+    for student <- students, into: base do
+      is_admin? = if Authorization.is_admin?(student), do: "sim", else: "não"
+
+      ~s"""
+      <b>Nome:</b> #{student.full_name}
+      <b>Username:</b> #{student.telegram_username}
+      <b>É admin?</b> #{is_admin?}
+
+      """
+    end
+  end
 
   @doc """
   Given the challenges file and a optional ranking position,
