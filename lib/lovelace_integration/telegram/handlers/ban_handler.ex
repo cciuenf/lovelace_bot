@@ -3,7 +3,6 @@ defmodule LovelaceIntegration.Telegram.Handlers.BanHandler do
   Kicks and ban a user forever from a group
   """
 
-  alias Lovelace.Accounts
   alias LovelaceIntegration.Telegram.{Client, Helpers, Message}
   @behaviour LovelaceIntegration.Telegram.Handlers
 
@@ -20,10 +19,10 @@ defmodule LovelaceIntegration.Telegram.Handlers.BanHandler do
     msg.text
     |> Helpers.get_args()
     |> String.split(" ")
-    |> Enum.filter(&(&1 =~ "@"))
-    |> Helpers.get_mentioned_users_ids()
+    |> Helpers.parse_mentions(msg)
+    |> Helpers.get_mentioned_users()
     |> Enum.map(fn
-      {:ok, user} ->
+      {:ok, user, _mention} ->
         %{
           chat_id: msg.chat_id,
           user_id: user.telegram_id,
@@ -31,13 +30,8 @@ defmodule LovelaceIntegration.Telegram.Handlers.BanHandler do
         }
         |> Client.ban_user()
 
-      {:error, :not_found} ->
-        %{
-          chat_id: msg.chat_id,
-          text: ~s(O usuário "#{username}" não foi encontrado...),
-          reply_to_message_id: msg.message_id
-        }
-        |> Client.send_message()
+      {:error, :not_found, mention} ->
+        Client.dont_exist(msg, mention)
     end)
   end
 end

@@ -62,6 +62,18 @@ defmodule LovelaceIntegration.Telegram.Client do
     |> send_message()
   end
 
+  @doc """
+  Sends a message sayingthat the mentioned user does not exist
+  """
+  def dont_exist(msg, mention) do
+    %{
+      chat_id: msg.chat_id,
+      text: ~s(O usuário "#{mention}" não foi encontrado...),
+      reply_to_message_id: msg.message_id
+    }
+    |> send_message()
+  end
+
   defp build_and_send(fun, route, module, params) do
     {:ok, input} = params |> module.build()
 

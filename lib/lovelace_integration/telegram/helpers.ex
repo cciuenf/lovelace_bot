@@ -7,6 +7,7 @@ defmodule LovelaceIntegration.Telegram.Helpers do
   require Logger
 
   alias Lovelace.Accounts
+  alias LovelaceIntegration.Telegram.Client
 
   plug Tesla.Middleware.Headers
   plug Tesla.Middleware.JSON
@@ -32,11 +33,33 @@ defmodule LovelaceIntegration.Telegram.Helpers do
   and returns a list of user_id that have been mentioned in message
   /kick @User_1 @User_2 -> 184564595 284564595
   """
-  def get_mentioned_users_ids(mentions) do
+  def get_mentioned_users(mentions) do
     mentions
     |> Enum.map(&String.replace(&1, "@", ""))
     |> Enum.map(fn mention ->
       Accounts.get_user_by(username: mention)
+      |> Tuple.append(mention)
+    end)
+  end
+
+  @doc """
+  Check if it's a valid mention
+  """
+  def parse_mentions(mentions, msg) do
+    mentions
+    |> Enum.filter(fn mention ->
+      if mention =~ "@" do
+        true
+      else
+        %{
+          chat_id: msg.chat_id,
+          text: ~s(Você precisa mencionar o usuário com um "@"),
+          reply_to_message_id: msg.message_id
+        }
+        |> Client.send_message()
+
+        false
+      end
     end)
   end
 

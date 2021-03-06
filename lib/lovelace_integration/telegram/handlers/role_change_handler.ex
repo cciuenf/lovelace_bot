@@ -5,15 +5,57 @@ defmodule LovelaceIntegration.Telegram.Handlers.RoleChangeHandler do
 
   alias Lovelace.Accounts
 
-  alias LovelaceIntegration.Telegram.{Client, Message}
+  alias LovelaceIntegration.Telegram.{Client, Helpers, Message}
   @behaviour LovelaceIntegration.Telegram.Handlers
 
   import Lovelace.Accounts.Authorization
 
-  def handle(%Message{text: "/promover" <> " " <> username} = msg) do
-    {:ok, requester} = Accounts.get_user_by(telegram_id: msg.from.id)
-    {:ok, user_to_promote} = Accounts.get_user_by(username: username)
+  def handle(%Message{} = msg) when msg.chat_type == "private" do
+    %{
+      chat_id: msg.chat_id,
+      text: "Este comando funciona apenas em grupos...",
+      reply_to_message_id: msg.message_id
+    }
+    |> Client.send_message()
+  end
 
+  def handle(%Message{text: "/promover" <> _} = msg) do
+    msg.text
+    |> Helpers.get_args()
+    |> String.split(" ")
+    |> Helpers.parse_mentions(msg)
+    |> Helpers.get_mentioned_users()
+    |> Enum.map(fn
+      {:ok, user_to_promote, _mention} ->
+        {:ok, requester} = Accounts.get_user_by(telegram_id: msg.from.id)
+
+        requester
+        |> promote(user_to_promote, msg)
+
+      {:error, :not_found, mention} ->
+        Client.dont_exist(msg, mention)
+    end)
+  end
+
+  def handle(%Message{text: "/rebaixar" <> _} = msg) do
+    msg.text
+    |> Helpers.get_args()
+    |> String.split(" ")
+    |> Helpers.parse_mentions(msg)
+    |> Helpers.get_mentioned_users()
+    |> Enum.map(fn
+      {:ok, user_to_restrict, _mention} ->
+        {:ok, requester} = Accounts.get_user_by(telegram_id: msg.from.id)
+
+        requester
+        |> restrict(user_to_restrict, msg)
+
+      {:error, :not_found, mention} ->
+        Client.dont_exist(msg, mention)
+    end)
+  end
+
+  defp promote(requester, user_to_promote, msg) do
     if can?(requester, :can_promote_user) do
       cond do
         is_student?(user_to_promote) ->
@@ -41,10 +83,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.RoleChangeHandler do
     end
   end
 
-  def handle(%Message{text: "/rebaixar" <> " " <> username} = msg) do
-    {:ok, requester} = Accounts.get_user_by(telegram_id: msg.from.id)
-    {:ok, user_to_restrict} = Accounts.get_user_by(username: username)
-
+  defp restrict(requester, user_to_restrict, msg) do
     if can?(requester, :can_restrict_user) do
       cond do
         is_professor?(user_to_restrict) ->
