@@ -10,7 +10,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.RoleChangeHandler do
 
   import Lovelace.Accounts.Authorization
 
-  def handle(%Message{text: "/roleadd" <> " " <> username} = msg) do
+  def handle(%Message{text: "/promover" <> " " <> username} = msg) do
     {:ok, requester} = Accounts.get_user_by(telegram_id: msg.from.id)
     {:ok, user_to_promote} = Accounts.get_user_by(username: username)
 
@@ -41,7 +41,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.RoleChangeHandler do
     end
   end
 
-  def handle(%Message{text: "/roleremove" <> " " <> username} = msg) do
+  def handle(%Message{text: "/rebaixar" <> " " <> username} = msg) do
     {:ok, requester} = Accounts.get_user_by(telegram_id: msg.from.id)
     {:ok, user_to_restrict} = Accounts.get_user_by(username: username)
 
