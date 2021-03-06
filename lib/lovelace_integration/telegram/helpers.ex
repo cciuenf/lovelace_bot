@@ -102,7 +102,7 @@ defmodule LovelaceIntegration.Telegram.Helpers do
     students = Accounts.list_students()
     professors = Accounts.list_professors()
 
-    ~s"""
+    base = ~s"""
     <b>Relatório do grupo</b>
 
     Informações gerais sobre o grupo!
@@ -110,9 +110,28 @@ defmodule LovelaceIntegration.Telegram.Helpers do
     <b>Número de membros:</b> #{members_count}
     <b>Membros cadastrados:</b> #{length(users)}
     <b>Alunos:</b> #{length(students)}
-    <b>Professores:</b> #{length(professors)}
-    <b>Administradores:</b> #{length(admins)}
+
     """
+
+    base = base <> "<b>Administradores</b>\n\n"
+
+    for admin <- admins, into: base do
+      ~s"""
+      Nome: #{admin.full_name}
+      Username: #{admin.telegram_username}
+
+      """
+    end
+
+    base = base <> "<b>Professores</b>\n\n"
+
+    for prof <- professors, into: base do
+      ~s"""
+      Nome: #{prof.full_name}
+      Username: #{prof.telegram_username}
+
+      """
+    end
   end
 
   @doc """
