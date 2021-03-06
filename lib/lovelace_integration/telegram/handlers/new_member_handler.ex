@@ -6,7 +6,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
   require Logger
 
   alias LovelaceIntegration.Telegram
-  alias LovelaceIntegration.Telegram.{ChatMember, Client, Message}
+  alias LovelaceIntegration.Telegram.{ChatMember, Client, Helpers, Message}
 
   @behaviour LovelaceIntegration.Telegram.Handlers
 
@@ -37,8 +37,6 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
   }
 
   @bot_id Application.compile_env(:lovelace, :bot_config)[:bot_id]
-
-  @seconds_in_year 3_171 * 100 * 100 * 100 * 10
 
   @captcha_countdown 40 * 1_000
 
@@ -138,7 +136,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
     params = %{
       chat_id: c_id,
       user_id: u_id,
-      until_date: forever()
+      until_date: Helpers.forever()
     }
 
     {:ok, ref} = :timer.apply_after(@captcha_countdown, Client, :ban_user, [params])
@@ -146,18 +144,12 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
     {:ok, ref, u_id}
   end
 
-  defp forever do
-    DateTime.utc_now()
-    |> DateTime.add(@seconds_in_year, :second)
-    |> DateTime.to_unix()
-  end
-
   defp restrict_time do
     config_ban_time = Application.get_env(:lovelace, :bot_config)[:ban_duration]
 
     cond do
       config_ban_time == :forever ->
-        forever()
+        Helpers.forever()
 
       is_integer(config_ban_time) and config_ban_time > 0 ->
         DateTime.utc_now()
@@ -165,7 +157,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
         |> DateTime.to_unix()
 
       true ->
-        forever()
+        Helpers.forever()
     end
   end
 

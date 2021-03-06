@@ -15,7 +15,7 @@ Mais por vir...
 - [ ] Trazer uma solução específica de um desafio
 - [x] Promover usuário
 - [x] Restringir permissão de um usuário
-- [ ] Banir um usuário
+- [x] Banir um usuário(s)
 - [ ] Listar todos os alunos
 - [ ] Mostrar uma "agenda"
 

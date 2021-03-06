@@ -12,6 +12,8 @@ defmodule LovelaceIntegration.Telegram.Helpers do
   plug Tesla.Middleware.JSON
   plug Tesla.Middleware.Logger
 
+  @seconds_in_year 3_171 * 100 * 100 * 100 * 10
+
   @doc """
   Return an args list as
   "/comand 1 2 3" -> [1, 2, 3]
@@ -34,9 +36,7 @@ defmodule LovelaceIntegration.Telegram.Helpers do
     mentions
     |> Enum.map(&String.replace(&1, "@", ""))
     |> Enum.map(fn mention ->
-      {:ok, user} = Accounts.get_user_by(username: mention)
-
-      user.telegram_id
+      Accounts.get_user_by(username: mention)
     end)
   end
 
@@ -49,6 +49,16 @@ defmodule LovelaceIntegration.Telegram.Helpers do
       |> Integer.parse()
 
     number
+  end
+
+  @doc """
+  Returns a "forever" timestamp
+  """
+  def forever do
+    DateTime.utc_now()
+    |> DateTime.add(@seconds_in_year, :second)
+    |> DateTime.add(@seconds_in_year, :second)
+    |> DateTime.to_unix()
   end
 
   @doc """

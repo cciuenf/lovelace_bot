@@ -21,6 +21,7 @@ defmodule LovelaceIntegration.Telegram.Message do
   embedded_schema do
     field :message_id, :integer
     field :chat_id, :integer
+    field :chat_type, :string
     field :text, :string
     field :user_id, :integer
 
@@ -46,6 +47,7 @@ defmodule LovelaceIntegration.Telegram.Message do
     |> Changeset.cast(params, [:text, :message_id, :chat_id])
     |> Changeset.validate_required([:text, :message_id])
     |> put_chat_id()
+    |> put_chat_type()
     |> put_user_id()
     |> Changeset.cast_embed(:from, with: &from_changeset/2)
     |> Changeset.cast_embed(:reply_to_message, with: &reply_to_message_changeset/2)
@@ -70,6 +72,14 @@ defmodule LovelaceIntegration.Telegram.Message do
       changeset,
       :chat_id,
       Changeset.get_change(changeset, :chat_id, params["chat"]["id"])
+    )
+  end
+
+  defp put_chat_type(%Ecto.Changeset{params: params} = changeset) do
+    Ecto.Changeset.put_change(
+      changeset,
+      :chat_type,
+      Changeset.get_change(changeset, :chat_type, params["chat"]["type"])
     )
   end
 
