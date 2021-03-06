@@ -50,6 +50,13 @@ defmodule LovelaceIntegration.Telegram.Client do
   end
 
   @doc """
+  Calls the getChatMembersCount in the telegram api
+  """
+  def get_group_members_count(params) do
+    build_and_send(&post/2, "/getChatMembersCount", ClientInputs.GroupMembersCount, params)
+  end
+
+  @doc """
   Sends a message saying that the user had requested
   a action that's outside of his scope
   """

@@ -8,6 +8,7 @@
 Mais por vir...
 
 *** Comandos à serem implementados:
+- [x] Mostrar um pequeno relatório do grupo
 - [x] Mostrar o ranking geral dos desafios
 - [x] Mostrar o ranking relativo dos desafios
 - [x] Listar todos os desafios

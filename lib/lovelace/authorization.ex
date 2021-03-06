@@ -9,7 +9,7 @@ defmodule Lovelace.Accounts.Authorization do
   @student_permissions ~w(can_list_ranking can_list challenges can_ask_definition)a
 
   @admin_permissions @student_permissions ++
-                       ~w(can_list_users can_ban_user can_restrict_user can_promote_user)a
+                       ~w(can_list_users can_ban_user can_restrict_user can_promote_user can_verify)a
 
   @professor_permissions @admin_permissions ++ ~w(can_send_notices)a
 

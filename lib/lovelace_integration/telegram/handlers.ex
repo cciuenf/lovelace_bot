@@ -17,7 +17,8 @@ defmodule LovelaceIntegration.Telegram.Handlers do
     RankingHandler,
     RoleChangeHandler,
     UnkownHandler,
-    UserHandler
+    UserHandler,
+    VerifyHandler
   }
 
   @callback handle(Message.t() | Callback.t()) :: {:ok, term()} | {:error, term()}
@@ -27,6 +28,7 @@ defmodule LovelaceIntegration.Telegram.Handlers do
   """
   def get_handler(%Message{text: "/ajuda"}), do: {:ok, HelpHandler}
   def get_handler(%Message{text: "/listar"}), do: {:ok, ListHandler}
+  def get_handler(%Message{text: "/verificar"}), do: {:ok, VerifyHandler}
   def get_handler(%Message{text: "/desafios"}), do: {:ok, ChallengesHandler}
   def get_handler(%Message{text: "/ranking" <> _}), do: {:ok, RankingHandler}
   def get_handler(%Message{text: "/banir" <> " " <> _}), do: {:ok, BanHandler}

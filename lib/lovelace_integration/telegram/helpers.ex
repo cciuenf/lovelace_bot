@@ -93,6 +93,29 @@ defmodule LovelaceIntegration.Telegram.Helpers do
   def handle_response(resp = {:error, _error}), do: resp
 
   @doc """
+  Returns all group info
+  """
+  def extract_group_info(members_count) do
+    users = Accounts.list_users()
+
+    admins = Accounts.list_admins()
+    students = Accounts.list_students()
+    professors = Accounts.list_professors()
+
+    ~s"""
+    <b>Relatório do grupo</b>
+
+    Informações gerais sobre o grupo!
+
+    <b>Número de membros:</b> #{members_count}
+    <b>Membros cadastrados:</b> #{length(users)}
+    <b>Alunos:</b> #{length(students)}
+    <b>Professores:</b> #{length(professors)}
+    <b>Administradores:</b> #{length(admins)}
+    """
+  end
+
+  @doc """
   Returns all students
   """
   def extract_students do
