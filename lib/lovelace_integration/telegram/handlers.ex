@@ -7,6 +7,7 @@ defmodule LovelaceIntegration.Telegram.Handlers do
   alias LovelaceIntegration.Telegram.{Callback, Message}
 
   alias LovelaceIntegration.Telegram.Handlers.{
+    ChallengesHandler,
     DefaultHandler,
     HelpHandler,
     LeftMemberHandler,
@@ -22,10 +23,13 @@ defmodule LovelaceIntegration.Telegram.Handlers do
   Matches a message with its handler module
   """
   def get_handler(%Message{text: "/ajuda"}), do: {:ok, HelpHandler}
-  def get_handler(%Message{text: "new_user"}), do: {:ok, NewMemberHandler}
-  def get_handler(%Message{text: "left_user"}), do: {:ok, LeftMemberHandler}
+  def get_handler(%Message{text: "/desafios"}), do: {:ok, ChallengesHandler}
+  def get_handler(%Message{text: "/desafio" <> " " <> _}), do: {:ok, ChallengesHandler}
   def get_handler(%Message{text: "/promover" <> " " <> _}), do: {:ok, RoleChangeHandler}
   def get_handler(%Message{text: "/rebaixar" <> " " <> _}), do: {:ok, RoleChangeHandler}
+
+  def get_handler(%Message{text: "new_user"}), do: {:ok, NewMemberHandler}
+  def get_handler(%Message{text: "left_user"}), do: {:ok, LeftMemberHandler}
 
   def get_handler(%Message{text: "/" <> _}), do: {:ok, UnkownHandler}
 

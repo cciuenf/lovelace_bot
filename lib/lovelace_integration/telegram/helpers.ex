@@ -54,7 +54,7 @@ defmodule LovelaceIntegration.Telegram.Helpers do
   @doc """
   Wraps Tesla responses
   """
-  def handle_response({:ok, %{status: 200, body: body}}), do: {:ok, body}
+  def handle_response({:ok, %{status: 200, body: body}}), do: {:ok, Jason.decode!(body)}
   def handle_response({:ok, resp = %{status: _, body: _}}), do: {:error, resp}
   def handle_response(resp = {:error, _error}), do: resp
 
@@ -63,17 +63,48 @@ defmodule LovelaceIntegration.Telegram.Helpers do
   returns a parsed message.
   """
   def extract_challenges({:ok, body}, _number = "") do
-    for item <- body, into: "" do
-      ~s(#{item["name"]} - soluções: #{item["solutions"]} - #{item["link"]}\n)
-    end
+    base = ~s"""
+    <b>Desafios da Lovelace</b>
+
+    Aqui estão os desafios existentes:
+
+    """
+
+    res =
+      for {item, index} <- Enum.with_index(body), into: base do
+        link = ~s(<a href="#{item["link"]}">desafio #{index + 1}</a>)
+
+        ~s"""
+        <b>#{item["name"]}</b>
+        Soluções: #{item["solutions"]}
+        Link: #{link}
+
+
+        """
+      end
+
+    {:ok, res}
   end
 
   def extract_challenges({:ok, body}, number) do
-    item =
-      body
-      |> Enum.at(digit_to_int(number))
+    number = digit_to_int(number)
 
-    ~s(#{item["name"]} - soluções: #{item["solutions"]} - #{item["link"]}\n)
+    if number > length(body) do
+      {:error, "Esse desafio não existe"}
+    else
+      item =
+        body
+        |> Enum.at(number)
+
+      res = ~s"""
+      <b>#{item["name"]}</b>
+      Soluções: #{item["solutions"]}
+      Link: #{item["link"]}
+
+      """
+
+      {:ok, res}
+    end
   end
 
   @doc """
@@ -81,18 +112,44 @@ defmodule LovelaceIntegration.Telegram.Helpers do
   returns a parsed message.
   """
   def extract_ranking({:ok, body}, _top = "") do
-    for item <- body, into: "" do
-      ~s(#{item["ranking"]} - soluções: #{item["user"]} - #{item["pontuation"]}\n)
+    base = ~s"""
+    <b>Ranking geral dos desafios da Lovelace</b>
+
+    """
+
+    ranking = body |> Enum.sort_by(& &1["pontuation"]) |> Enum.with_index()
+
+    for {item, position} <- ranking, into: base do
+      ~s"""
+      <b>#{position + 1}º lugar</b>
+      Usuário: #{item["user"]}
+      Pontuação: #{item["pontuation"]}
+
+      """
     end
   end
 
   def extract_ranking({:ok, body}, top) do
+    base = ~s"""
+    <b>Ranking relativo dos desafios da Lovelace</b>
+
+    """
+
+    ranking = body |> Enum.sort_by(& &1["pontuation"]) |> Enum.with_index()
+
     slice =
-      body
+      ranking
       |> Enum.slice(0, digit_to_int(top))
 
-    for item <- slice, into: "" do
-      ~s(#{item["ranking"]} - soluções: #{item["user"]} - #{item["pontuation"]}\n)
+    base = base <> "Mostrando os #{length(slice)} primeiros usuários"
+
+    for {item, position} <- slice, into: base do
+      ~s"""
+      <b>#{position + 1}º lugar</b>
+      Usuário: #{item["user"]}
+      Pontuação: #{item["pontuation"]}
+
+      """
     end
   end
 

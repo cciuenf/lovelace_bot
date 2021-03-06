@@ -5,7 +5,7 @@ defmodule LovelaceIntegration.Telegram.Client do
 
   use Tesla
 
-  alias LovelaceIntegration.Telegram.{ClientInputs, Message}
+  alias LovelaceIntegration.Telegram.ClientInputs
 
   defp bot_token, do: Application.get_env(:lovelace, __MODULE__)[:bot_token]
 
@@ -53,7 +53,7 @@ defmodule LovelaceIntegration.Telegram.Client do
   Sends a message saying that the user had requested
   a action that's outside of his scope
   """
-  def unauthenticated(%Message{} = msg) do
+  def unauthenticated(msg) do
     %{
       chat_id: msg.chat_id,
       text: "Você não têm permissões suficientes para executar esse comando...",

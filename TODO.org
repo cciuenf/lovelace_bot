@@ -9,10 +9,13 @@ Mais por vir...
 
 *** Comandos à serem implementados:
 - [ ] Mostrar o ranking geral dos desafios
+- [x] Listar todos os desafios
+- [x] Mostrar apenas um desafio
 - [ ] Trazer uma solução específica de um desafio
 - [x] Promover usuário
 - [x] Restringir permissão de um usuário
 - [ ] Banir um usuário
 - [ ] Listar todos os alunos
+- [ ] Mostrar uma "agenda"
 
 Em construção...
