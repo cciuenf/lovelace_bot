@@ -35,6 +35,10 @@ defmodule LovelaceIntegration.Telegram.Handlers.BanHandler do
             until_date: Helpers.forever()
           }
           |> Client.ban_user()
+
+          Accounts.delete_user(user)
+
+          {:ok, :banned}
         else
           Client.unauthenticated(msg)
         end
