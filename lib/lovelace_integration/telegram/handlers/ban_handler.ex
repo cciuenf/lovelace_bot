@@ -6,6 +6,9 @@ defmodule LovelaceIntegration.Telegram.Handlers.BanHandler do
   alias LovelaceIntegration.Telegram.{Client, Helpers, Message}
   @behaviour LovelaceIntegration.Telegram.Handlers
 
+  alias Lovelace.Accounts
+  alias Lovelace.Accounts.Authorization
+
   def handle(%Message{} = msg) when msg.chat_type == "private" do
     %{
       chat_id: msg.chat_id,
@@ -16,6 +19,8 @@ defmodule LovelaceIntegration.Telegram.Handlers.BanHandler do
   end
 
   def handle(%Message{} = msg) do
+    {:ok, requester} = Accounts.get_user_by(telegram_id: msg.from.id)
+
     msg.text
     |> Helpers.get_args()
     |> String.split(" ")
@@ -23,12 +28,16 @@ defmodule LovelaceIntegration.Telegram.Handlers.BanHandler do
     |> Helpers.get_mentioned_users()
     |> Enum.map(fn
       {:ok, user, _mention} ->
-        %{
-          chat_id: msg.chat_id,
-          user_id: user.telegram_id,
-          until_date: Helpers.forever()
-        }
-        |> Client.ban_user()
+        if Authorization.can?(requester, :can_ban_users) do
+          %{
+            chat_id: msg.chat_id,
+            user_id: user.telegram_id,
+            until_date: Helpers.forever()
+          }
+          |> Client.ban_user()
+        else
+          Client.unauthenticated(msg)
+        end
 
       {:error, :not_found, mention} ->
         Client.dont_exist(msg, mention)
