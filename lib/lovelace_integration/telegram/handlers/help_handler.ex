@@ -12,14 +12,24 @@ defmodule LovelaceIntegration.Telegram.Handlers.HelpHandler do
 
     Dependendo do seu papel no grupo, posso realizar diferentes tarefas!
 
+    Case você seja um professor, todos os comandos podem ser executados!
+
     Veja algumas delas:
 
     <b>Se você for um professor</b>
     1. /listar -> lista todos os alunos cadastrados
     WIP...
 
+    <b>Se voê for um admin</b>
+    1. /promover <menções> -> promove um ou mais usuaŕios
+    2. /rebaixar <menções> -> rebaixa um ou mais usuaŕios
+    3. /banir <menções> -> bane um ou mais usuários
+
     <b>Se você for aluno</b>
-    WIP...
+    1. /desafios -> lista todos os desafios da Lovelace
+    2. /desafio <número> -> mostra apenas um desafio
+    3. /ranking -> mostra o ranking geral dos desafios
+    4. /ranking <número> -> mostra os primeiros N desafiantes
     """
   end
 
