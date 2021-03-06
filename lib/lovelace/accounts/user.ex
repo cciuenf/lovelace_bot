@@ -19,15 +19,11 @@ defmodule Lovelace.Accounts.User do
 
   import Ecto.Changeset
 
-  alias Lovelace.Fun.Solution
-
   schema "users" do
     field :full_name, :string
     field :telegram_id, :integer
     field :telegram_username, :string
     field :role, Ecto.Enum, values: @roles, default: :student
-
-    has_many :solutions, Solution
 
     timestamps()
   end
