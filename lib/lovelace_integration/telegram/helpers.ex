@@ -137,11 +137,18 @@ defmodule LovelaceIntegration.Telegram.Helpers do
 
     ranking = body |> Enum.sort_by(& &1["pontuation"]) |> Enum.with_index()
 
+    offset = digit_to_int(top)
+
     slice =
       ranking
-      |> Enum.slice(0, digit_to_int(top))
+      |> Enum.slice(0, offset)
 
-    base = base <> "Mostrando os #{length(slice)} primeiros usuários"
+    base =
+      if length(body) < offset,
+        do: base <> "Não existem tantos participantes assim...\n\n",
+        else: base
+
+    base = base <> "Mostrando os #{length(slice)} primeiros usuários\n\n"
 
     for {item, position} <- slice, into: base do
       ~s"""

@@ -8,7 +8,8 @@
 Mais por vir...
 
 *** Comandos à serem implementados:
-- [ ] Mostrar o ranking geral dos desafios
+- [x] Mostrar o ranking geral dos desafios
+- [x] Mostrar o ranking relativo dos desafios
 - [x] Listar todos os desafios
 - [x] Mostrar apenas um desafio
 - [ ] Trazer uma solução específica de um desafio
