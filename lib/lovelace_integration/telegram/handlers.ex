@@ -17,6 +17,7 @@ defmodule LovelaceIntegration.Telegram.Handlers do
     NewMemberHandler,
     RankingHandler,
     RoleChangeHandler,
+    SignupHandler,
     UnkownHandler,
     UserHandler,
     VerifyHandler
@@ -31,6 +32,7 @@ defmodule LovelaceIntegration.Telegram.Handlers do
   def get_handler(%Message{text: "/listar"}), do: {:ok, ListHandler}
   def get_handler(%Message{text: "/agenda"}), do: {:ok, AgendaHandler}
   def get_handler(%Message{text: "/verificar"}), do: {:ok, VerifyHandler}
+  def get_handler(%Message{text: "/cadastrar"}), do: {:ok, SignupHandler}
   def get_handler(%Message{text: "/desafios"}), do: {:ok, ChallengesHandler}
   def get_handler(%Message{text: "/ranking" <> _}), do: {:ok, RankingHandler}
   def get_handler(%Message{text: "/banir" <> " " <> _}), do: {:ok, BanHandler}

@@ -27,6 +27,8 @@ defmodule LovelaceIntegration.Telegram.Message do
 
     embeds_one :from, From, primary_key: @primary_key_opts do
       field :username, :string
+      field :first_name, :string
+      field :last_name, :string
     end
 
     embeds_one :new_chat_member, NewChartMember, primary_key: @primary_key_opts do
@@ -65,7 +67,8 @@ defmodule LovelaceIntegration.Telegram.Message do
     |> Changeset.cast_embed(:from, with: &from_changeset/2)
   end
 
-  defp from_changeset(schema, params), do: Changeset.cast(schema, params, [:username, :id])
+  defp from_changeset(schema, params),
+    do: Changeset.cast(schema, params, [:username, :id, :last_name, :first_name])
 
   defp put_chat_id(%Ecto.Changeset{params: params} = changeset) do
     Ecto.Changeset.put_change(

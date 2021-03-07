@@ -138,7 +138,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.UserHandler do
 
     full_name = first_name <> " " <> last_name
 
-    username = cb.from.username || full_name
+    username = cb.from.username || first_name
 
     {username, full_name}
   end
