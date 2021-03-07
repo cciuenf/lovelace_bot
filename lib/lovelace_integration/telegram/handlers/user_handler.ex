@@ -5,8 +5,8 @@ defmodule LovelaceIntegration.Telegram.Handlers.UserHandler do
 
   require Logger
 
-  alias Lovelace.State
   alias Lovelace.Accounts
+  alias Lovelace.State
 
   alias LovelaceIntegration.Telegram.{Callback, Client}
   @behaviour LovelaceIntegration.Telegram.Handlers
