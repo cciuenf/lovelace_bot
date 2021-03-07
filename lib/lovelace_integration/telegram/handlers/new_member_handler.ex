@@ -5,6 +5,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
 
   require Logger
 
+  alias Lovelace.State
   alias LovelaceIntegration.Telegram
   alias LovelaceIntegration.Telegram.{ChatMember, Client, Helpers, Message}
 
@@ -48,7 +49,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
     |> start_countdown()
     |> case do
       {:ok, ref} ->
-        Application.put_env(:lovelace, :timer_ref, ref)
+        State.put(:timer_ref, ref)
 
         {:ok, :timer_set}
 

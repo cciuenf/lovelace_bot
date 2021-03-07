@@ -5,6 +5,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.UserHandler do
 
   require Logger
 
+  alias Lovelace.State
   alias Lovelace.Accounts
 
   alias LovelaceIntegration.Telegram.{Callback, Client}
@@ -26,7 +27,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.UserHandler do
   def handle(%Callback{data: "professor"} = cb) do
     case check_cb_ownership(cb) do
       {:ok, cb} ->
-        Application.get_env(:lovelace, :timer_ref) |> captcha_solved()
+        State.get(:timer_ref) |> captcha_solved()
 
         {username, full_name} = get_user_info(cb)
 
@@ -52,7 +53,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.UserHandler do
   def handle(%Callback{data: "student"} = cb) do
     case check_cb_ownership(cb) do
       {:ok, cb} ->
-        Application.get_env(:lovelace, :timer_ref) |> captcha_solved()
+        State.get(:timer_ref) |> captcha_solved()
 
         {username, full_name} = get_user_info(cb)
 
@@ -143,5 +144,9 @@ defmodule LovelaceIntegration.Telegram.Handlers.UserHandler do
     {username, full_name}
   end
 
-  defp captcha_solved(timer_ref), do: {:ok, :cancel} = :timer.cancel(timer_ref)
+  defp captcha_solved(timer_ref) do
+    {:ok, :cancel} = :timer.cancel(timer_ref)
+
+    State.delete(:timer_ref)
+  end
 end

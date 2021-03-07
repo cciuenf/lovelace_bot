@@ -1,5 +1,5 @@
 defmodule LovelaceIntegration.Telegram.Handlers.SignupHandler do
-  @doc """
+  @moduledoc """
   Allows a user to register themself
   """
 

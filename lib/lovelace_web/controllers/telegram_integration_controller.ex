@@ -3,6 +3,7 @@ defmodule LovelaceWeb.TelegramIntegrationController do
 
   require Logger
 
+  alias Lovelace.State
   alias LovelaceIntegration.Telegram
 
   def webhook(conn, %{"callback_query" => _} = params) do
@@ -41,7 +42,7 @@ defmodule LovelaceWeb.TelegramIntegrationController do
       |> Map.put("text", "left_user")
 
     with true <- Application.get_env(:lovelace, :bot_id) == id,
-         true <- Application.get_env(:lovelace, :timer_ref) |> is_nil(),
+         true <- State.get(:timer_ref) |> is_nil(),
          {:ok, message} <- Telegram.build_message(params),
          :ok <- Telegram.enqueue_processing!(message) do
       Logger.info("Left User Message enqueued for later processing")

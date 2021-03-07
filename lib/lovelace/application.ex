@@ -1,6 +1,4 @@
 defmodule Lovelace.Application do
-  # See https://hexdocs.pm/elixir/Application.html
-  # for more information on OTP Applications
   @moduledoc false
 
   use Application
@@ -19,10 +17,10 @@ defmodule Lovelace.Application do
       Consumers.MessageHandler,
       # Start the consumer for telegram callbacks
       Consumers.CallbackHandler,
+      # Start the state manager
+      {Lovelace.State, name: :state},
       # Start the Endpoint (http/https)
       LovelaceWeb.Endpoint
-      # Start a worker by calling: Lovelace.Worker.start_link(arg)
-      # {Lovelace.Worker, arg}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
