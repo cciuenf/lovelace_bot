@@ -42,7 +42,7 @@ defmodule LovelaceWeb.TelegramIntegrationController do
       |> Map.put("text", "left_user")
 
     with true <- Application.get_env(:lovelace, :bot_id) == id,
-         true <- State.get(:timer_ref) |> is_nil(),
+         true <- State.get(:timer, :timer_ref) |> is_nil(),
          {:ok, message} <- Telegram.build_message(params),
          :ok <- Telegram.enqueue_processing!(message) do
       Logger.info("Left User Message enqueued for later processing")

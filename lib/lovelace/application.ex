@@ -18,7 +18,7 @@ defmodule Lovelace.Application do
       # Start the consumer for telegram callbacks
       Consumers.CallbackHandler,
       # Start the state manager
-      {Lovelace.State, name: :state},
+      {Lovelace.State, :state},
       # Start the Endpoint (http/https)
       LovelaceWeb.Endpoint
     ]

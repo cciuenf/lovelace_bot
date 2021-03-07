@@ -15,7 +15,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.LeftMemberHandler do
 
     config_ban_time = Application.get_env(:lovelace, :bot_config)[:ban_duration]
 
-    message_id = State.get(:message_id)
+    message_id = State.get(:msg, :message_id)
 
     %{
       chat_id: msg.chat_id,

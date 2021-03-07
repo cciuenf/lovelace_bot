@@ -49,7 +49,8 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
     |> start_countdown()
     |> case do
       {:ok, ref} ->
-        State.put(:timer_ref, ref)
+        {:ok, timer_state} = State.start_link(:timer)
+        State.put(timer_state, :timer_ref, ref)
 
         {:ok, :timer_set}
 
@@ -123,7 +124,8 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
     |> Client.send_message()
     |> case do
       {:ok, %{body: body}} ->
-        State.put(:message_id, body["result"]["message_id"])
+        {:ok, msg_state} = State.start_link(:msg)
+        State.put(msg_state, :message_id, body["result"]["message_id"])
 
         {:ok, msg}
 
