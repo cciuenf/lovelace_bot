@@ -1,13 +1,29 @@
 #+title: Lovelace-Bot
 
 #+caption: build
-[[https://github.com/cciuenf/lovelace_bot/workflows/build/badge.svg?branch=v2.0.0]]
+[[https://github.com/cciuenf/lovelace_bot/workflows/build/badge.svg?branch=main]]
 
 O bot do Telegram do grupo de CC.
 
 * Comandos:
+** Se você for um professor
+  1. =/listar= -> lista todos os alunos cadastrados
+  WIP...
 
-Em Contrução...
+** Se voê for um admin
+  1. =/promover <menções>= -> promove um ou mais usuaŕios
+  2. =/rebaixar <menções>= -> rebaixa um ou mais usuaŕios
+  3. =/banir <menções>= -> bane um ou mais usuários
+  4. =/verificar= -> mostra um pequeno relatório do grupo
+
+** Se você for aluno
+  1. =/ajuda= -> mostra uma mensagem descrevendo os comandos
+  2. =/agenda= -> mostra os próximos eventos do curso (WIP...)
+  3. =/desafios= -> lista todos os desafios da Lovelace
+  4. =/desafio <número>= -> mostra apenas um desafio
+  5. =/ranking= -> mostra o ranking geral dos desafios
+  6. =/ranking <número>= -> mostra os primeiros N desafiantes
+
 
 * Contribuindo:
 Sinta-se livre para mandar um pull request! :) Sugestões de comandos

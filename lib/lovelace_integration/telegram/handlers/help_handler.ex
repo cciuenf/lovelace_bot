@@ -28,7 +28,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.HelpHandler do
 
     <b>Se você for aluno</b>
     1. /ajuda -> mostra essa mensagem
-    2. /agenda -> mostra os próximos eventos do curso
+    2. /agenda -> mostra os próximos eventos do curso (WIP...)
     3. /desafios -> lista todos os desafios da Lovelace
     4. /desafio <número> -> mostra apenas um desafio
     5. /ranking -> mostra o ranking geral dos desafios
