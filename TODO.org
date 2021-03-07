@@ -18,6 +18,6 @@ Mais por vir...
 - [x] Restringir permissão de um usuário
 - [x] Banir um usuário(s)
 - [x] Listar todos os alunos
-- [ ] Mostrar uma "agenda"
+- [ ] Mostrar uma "agenda" (Está em desenvolvimento)
 
 Em construção...

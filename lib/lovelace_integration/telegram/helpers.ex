@@ -262,6 +262,17 @@ defmodule LovelaceIntegration.Telegram.Helpers do
   end
 
   @doc """
+  Returns a parsed message with next events
+  """
+  def extract_agenda do
+    ~s"""
+    <b>Próximos eventos</b>
+
+    <b>Início das aulas:</b> 08/03/2021
+    """
+  end
+
+  @doc """
   Gets the ranking file and then parses response
   """
   def get_ranking(top \\ "") do

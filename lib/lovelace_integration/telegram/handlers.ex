@@ -7,6 +7,7 @@ defmodule LovelaceIntegration.Telegram.Handlers do
   alias LovelaceIntegration.Telegram.{Callback, Message}
 
   alias LovelaceIntegration.Telegram.Handlers.{
+    AgendaHandler,
     BanHandler,
     ChallengesHandler,
     DefaultHandler,
@@ -28,6 +29,7 @@ defmodule LovelaceIntegration.Telegram.Handlers do
   """
   def get_handler(%Message{text: "/ajuda"}), do: {:ok, HelpHandler}
   def get_handler(%Message{text: "/listar"}), do: {:ok, ListHandler}
+  def get_handler(%Message{text: "/agenda"}), do: {:ok, AgendaHandler}
   def get_handler(%Message{text: "/verificar"}), do: {:ok, VerifyHandler}
   def get_handler(%Message{text: "/desafios"}), do: {:ok, ChallengesHandler}
   def get_handler(%Message{text: "/ranking" <> _}), do: {:ok, RankingHandler}
