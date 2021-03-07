@@ -89,8 +89,8 @@ defmodule LovelaceIntegration.Telegram.Helpers do
   Wraps Tesla responses
   """
   def handle_response({:ok, %{status: 200, body: body}}), do: {:ok, Jason.decode!(body)}
-  def handle_response({:ok, resp = %{status: _, body: _}}), do: {:error, resp}
-  def handle_response(resp = {:error, _error}), do: resp
+  def handle_response({:ok, %{status: _, body: _} = resp}), do: {:error, resp}
+  def handle_response({:error, _error} = resp), do: resp
 
   @doc """
   Returns all group info
@@ -163,7 +163,7 @@ defmodule LovelaceIntegration.Telegram.Helpers do
   Given the challenges file and a optional ranking position,
   returns a parsed message.
   """
-  def extract_challenges({:ok, body}, _number = "") do
+  def extract_challenges({:ok, body}, "" = _number) do
     base = ~s"""
     <b>Desafios da Lovelace</b>
 
@@ -212,7 +212,7 @@ defmodule LovelaceIntegration.Telegram.Helpers do
   Given the ranking file and a optional ranking position,
   returns a parsed message.
   """
-  def extract_ranking({:ok, body}, _top = "") do
+  def extract_ranking({:ok, body}, "" = _top) do
     base = ~s"""
     <b>Ranking geral dos desafios da Lovelace</b>
 
