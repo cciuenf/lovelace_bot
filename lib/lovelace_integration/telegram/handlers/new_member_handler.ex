@@ -122,7 +122,9 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
     }
     |> Client.send_message()
     |> case do
-      {:ok, _} ->
+      {:ok, %{body: body}} ->
+        State.put(:message_id, body["result"]["message_id"])
+
         {:ok, msg}
 
       error ->

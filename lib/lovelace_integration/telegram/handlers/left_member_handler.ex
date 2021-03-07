@@ -5,6 +5,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.LeftMemberHandler do
 
   require Logger
 
+  alias Lovelace.State
   alias LovelaceIntegration.Telegram.{Client, Message}
 
   @behaviour LovelaceIntegration.Telegram.Handlers
@@ -13,6 +14,14 @@ defmodule LovelaceIntegration.Telegram.Handlers.LeftMemberHandler do
     user_reference = lm.username || lm.first_name
 
     config_ban_time = Application.get_env(:lovelace, :bot_config)[:ban_duration]
+
+    message_id = State.get(:message_id)
+
+    %{
+      chat_id: msg.chat_id,
+      message_id: message_id
+    }
+    |> Client.delete_message()
 
     %{
       chat_id: msg.chat_id,
