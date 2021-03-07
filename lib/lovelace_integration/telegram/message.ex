@@ -31,9 +31,18 @@ defmodule LovelaceIntegration.Telegram.Message do
       field :last_name, :string
     end
 
-    embeds_one :new_chat_member, NewChartMember, primary_key: @primary_key_opts do
+    embeds_one :new_chat_member, NewChatMember, primary_key: @primary_key_opts do
       field :is_bot, :boolean
       field :username, :string
+      field :first_name, :string
+      field :last_name, :string
+    end
+
+    embeds_one :left_chat_member, LefChatMember, primary_key: @primary_key_opts do
+      field :is_bot, :boolean
+      field :username, :string
+      field :first_name, :string
+      field :last_name, :string
     end
 
     embeds_one :reply_to_message, ReplyToMessage, primary_key: @primary_key_opts do
@@ -54,10 +63,14 @@ defmodule LovelaceIntegration.Telegram.Message do
     |> Changeset.cast_embed(:from, with: &from_changeset/2)
     |> Changeset.cast_embed(:reply_to_message, with: &reply_to_message_changeset/2)
     |> Changeset.cast_embed(:new_chat_member, with: &new_chat_member_changeset/2)
+    |> Changeset.cast_embed(:left_chat_member, with: &left_chat_member_changeset/2)
   end
 
   defp new_chat_member_changeset(schema, params),
-    do: Changeset.cast(schema, params, [:is_bot, :username, :id])
+    do: Changeset.cast(schema, params, [:is_bot, :username, :id, :last_name, :first_name])
+
+  defp left_chat_member_changeset(schema, params),
+    do: Changeset.cast(schema, params, [:is_bot, :username, :id, :last_name, :first_name])
 
   defp reply_to_message_changeset(schema, params) do
     schema

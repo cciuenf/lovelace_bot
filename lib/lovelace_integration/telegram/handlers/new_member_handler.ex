@@ -47,9 +47,8 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
     |> challenge_user()
     |> start_countdown()
     |> case do
-      {:ok, ref, u_id} ->
+      {:ok, ref} ->
         Application.put_env(:lovelace, :timer_ref, ref)
-        Application.put_env(:lovelace, :user_id, u_id)
 
         {:ok, :timer_set}
 
@@ -141,7 +140,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.NewMemberHandler do
 
     {:ok, ref} = :timer.apply_after(@captcha_countdown, Client, :ban_user, [params])
 
-    {:ok, ref, u_id}
+    {:ok, ref}
   end
 
   defp restrict_time do

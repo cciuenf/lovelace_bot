@@ -115,7 +115,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.UserHandler do
       {:ok, _} ->
         %{
           chat_id: cb.chat_id,
-          message_id: cb.message.reply_to_message.message_id + 1
+          message_id: cb.message.message_id
         }
         |> Client.delete_message()
 

@@ -35,12 +35,12 @@ defmodule LovelaceWeb.TelegramIntegrationController do
     end
   end
 
-  def webhook(conn, %{"message" => %{"left_chat_member" => %{"id" => id}} = params}) do
+  def webhook(conn, %{"message" => %{"from" => %{"id" => id}, "left_chat_member" => _} = params}) do
     params =
       params
       |> Map.put("text", "left_user")
 
-    with true <- Application.get_env(:lovelace, :user_id) == id,
+    with true <- Application.get_env(:lovelace, :bot_id) == id,
          true <- Application.get_env(:lovelace, :timer_ref) |> is_nil(),
          {:ok, message} <- Telegram.build_message(params),
          :ok <- Telegram.enqueue_processing!(message) do

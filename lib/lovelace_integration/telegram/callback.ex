@@ -40,6 +40,7 @@ defmodule LovelaceIntegration.Telegram.Callback do
 
     embeds_one :message, Message do
       field :date, :integer
+      field :message_id, :integer
 
       embeds_one :reply_to_message, ReplyToMessage do
         field :chat_id, :integer
@@ -71,8 +72,8 @@ defmodule LovelaceIntegration.Telegram.Callback do
 
   defp message_changeset(schema, params) do
     schema
-    |> Changeset.cast(params, [:date])
-    |> Changeset.validate_required([:date])
+    |> Changeset.cast(params, [:date, :message_id])
+    |> Changeset.validate_required([:date, :message_id])
     |> Changeset.cast_embed(:reply_to_message, with: &reply_to_message_changeset/2)
   end
 
