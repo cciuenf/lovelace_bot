@@ -11,8 +11,8 @@ O bot do Telegram do grupo de CC.
   WIP...
 
 ** Se voê for um admin
-  1. =/promover <menções>= -> promove um ou mais usuaŕios
-  2. =/rebaixar <menções>= -> rebaixa um ou mais usuaŕios
+  1. =/promover <menções>= -> promove um ou mais usuários
+  2. =/rebaixar <menções>= -> rebaixa um ou mais usuários
   3. =/banir <menções>= -> bane um ou mais usuários
   4. =/verificar= -> mostra um pequeno relatório do grupo
 
