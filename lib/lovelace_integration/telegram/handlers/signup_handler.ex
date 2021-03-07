@@ -6,6 +6,8 @@ defmodule LovelaceIntegration.Telegram.Handlers.SignupHandler do
   alias LovelaceIntegration.Telegram.{Client, Message}
   @behaviour LovelaceIntegration.Telegram.Handlers
 
+  require Logger
+
   alias Lovelace.Accounts
 
   def handle(%Message{} = msg) when msg.chat_type == "private" do
@@ -43,7 +45,7 @@ defmodule LovelaceIntegration.Telegram.Handlers.SignupHandler do
           full_name: full_name
         }
         |> Accounts.create_student()
-        |> user_registred(msg, msg_text)
+        |> user_registred(msg)
     end
   end
 
