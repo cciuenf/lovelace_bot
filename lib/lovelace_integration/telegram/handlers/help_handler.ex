@@ -24,12 +24,15 @@ defmodule LovelaceIntegration.Telegram.Handlers.HelpHandler do
     1. /promover <menções> -> promove um ou mais usuaŕios
     2. /rebaixar <menções> -> rebaixa um ou mais usuaŕios
     3. /banir <menções> -> bane um ou mais usuários
+    4. /verificar -> mostra um pequeno relatório do grupo
 
     <b>Se você for aluno</b>
-    1. /desafios -> lista todos os desafios da Lovelace
-    2. /desafio <número> -> mostra apenas um desafio
-    3. /ranking -> mostra o ranking geral dos desafios
-    4. /ranking <número> -> mostra os primeiros N desafiantes
+    1. /ajuda -> mostra essa mensagem
+    2. /agenda -> mostra os próximos eventos do curso
+    3. /desafios -> lista todos os desafios da Lovelace
+    4. /desafio <número> -> mostra apenas um desafio
+    5. /ranking -> mostra o ranking geral dos desafios
+    6. /ranking <número> -> mostra os primeiros N desafiantes
     """
   end
 
