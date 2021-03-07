@@ -269,6 +269,10 @@ defmodule LovelaceIntegration.Telegram.Helpers do
     <b>Próximos eventos</b>
 
     <b>Início das aulas:</b> 08/03/2021
+
+    👩‍💻<b>SCTI</b>👨‍💻
+    Link: https://scti.uenf.br
+    Data: 01/11/2021
     """
   end
 
